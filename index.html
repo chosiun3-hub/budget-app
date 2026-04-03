@@ -21,7 +21,18 @@
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
+    
+    
     body {
+      <body>
+  <div id="updateBanner" style="display:none; position:fixed; top:10px; left:50%; transform:translateX(-50%); background:#111; color:#fff; padding:10px 14px; border-radius:999px; z-index:9999; font-size:13px;">
+    새 버전 있음
+    <button onclick="forceUpdate()" style="margin-left:10px; background:#2563eb; color:white; border:none; padding:6px 10px; border-radius:8px;">
+      업데이트
+    </button>
+  </div>
+
+  <div class="container">
       font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
       font-size: 15px;
       background: var(--bg);
@@ -677,8 +688,29 @@
 }
 
     
-    const APP_VERSION = "v1.0.5";
+    const APP_VERSION = "v1.0.6";
+function checkUpdate() {
+  fetch(window.location.href, { cache: "no-store" })
+    .then(res => res.text())
+    .then(html => {
+      const match = html.match(/APP_VERSION\s*=\s*["'](.+?)["']/);
+      if (!match) return;
 
+      const latestVersion = match[1];
+
+      if (latestVersion !== APP_VERSION) {
+        document.getElementById("updateBanner").style.display = "block";
+      }
+    })
+    .catch(() => {});
+}
+
+function forceUpdate() {
+  const url = new URL(window.location.href);
+  url.searchParams.set("v", Date.now());
+  window.location.href = url.toString();
+}
+    
     let transactions = JSON.parse(localStorage.getItem("money")) || [];
     let categories = JSON.parse(localStorage.getItem("categories")) || [
       { main: "수입", sub: "급여", type: "income" },
@@ -1754,7 +1786,8 @@ function triggerRestore() {
     renderAutoBackupInfo(); // ← 추가
     populateFixedCategoryOptions();
     renderFixedExpenseList();
-
+    checkUpdate();
+    
   </script>
 </body>
 </html>
