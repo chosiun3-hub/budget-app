@@ -47,7 +47,7 @@
     }
 
     .app-title {
-      font-size: 30px;
+      font-size: 28px;
       font-weight: 800;
       letter-spacing: -0.03em;
     }
@@ -95,82 +95,6 @@
       line-height: 1.5;
     }
 
-    .hint {
-      font-size: 12px;
-      color: var(--sub);
-      line-height: 1.5;
-      margin-top: 4px;
-    }
-
-    .stack {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .row-buttons {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .triple-buttons {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-    }
-
-    .quad-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    input, select, button {
-      width: 100%;
-      min-height: 50px;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-      background: #fff;
-      padding: 12px 14px;
-      font-size: 16px;
-      outline: none;
-    }
-
-    input:focus, select:focus {
-      border-color: #93c5fd;
-      box-shadow: 0 0 0 4px rgba(37,99,235,0.08);
-    }
-
-    button {
-      border: none;
-      background: var(--primary);
-      color: white;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(37,99,235,0.18);
-    }
-
-    button.secondary {
-      background: #eef2ff;
-      color: #374151;
-      box-shadow: none;
-      border: 1px solid #e5e7eb;
-    }
-
-    button.danger {
-      background: #fee2e2;
-      color: #b91c1c;
-      box-shadow: none;
-      border: 1px solid #fecaca;
-    }
-
     .summary-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -199,6 +123,62 @@
 
     .summary-value.income { color: var(--success); }
     .summary-value.expense { color: var(--danger); }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .row-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .quad-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    input, select, button {
+      width: 100%;
+      min-height: 48px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 12px 14px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: #93c5fd;
+      box-shadow: 0 0 0 4px rgba(37,99,235,0.08);
+    }
+
+    button {
+      border: none;
+      background: var(--primary);
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(37,99,235,0.18);
+    }
+
+    button.secondary {
+      background: #eef2ff;
+      color: #374151;
+      box-shadow: none;
+      border: 1px solid #e5e7eb;
+    }
 
     .budget-box {
       background: linear-gradient(180deg, #f8fafc, #ffffff);
@@ -294,6 +274,13 @@
       color: #374151;
       font-size: 14px;
       border: 1px solid #eef2f7;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: var(--sub);
+      line-height: 1.5;
+      margin-top: 4px;
     }
 
     .summary-box {
@@ -428,6 +415,17 @@
       color: #374151;
     }
 
+    .delete-btn {
+      width: auto;
+      min-width: 64px;
+      min-height: 40px;
+      padding: 10px 12px;
+      background: #fee2e2;
+      color: #b91c1c;
+      box-shadow: none;
+      font-size: 14px;
+    }
+
     .hidden {
       display: none !important;
     }
@@ -468,49 +466,20 @@
       z-index: 9999;
     }
 
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
     #undoToast {
       pointer-events: auto;
       cursor: pointer;
     }
 
-    #updateBanner {
-      display: none;
-      position: fixed;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #111827;
-      color: white;
-      padding: 10px 14px;
-      border-radius: 999px;
-      z-index: 9999;
-      font-size: 13px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.18);
-    }
-
-    #updateBanner button {
-      margin-left: 10px;
-      background: #2563eb;
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      border-radius: 8px;
-      min-height: auto;
-      width: auto;
-      box-shadow: none;
-      font-size: 13px;
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
     }
 
     @media (max-width: 640px) {
-      .app-title { font-size: 28px; }
+      .app-title { font-size: 26px; }
       .summary-grid { grid-template-columns: 1fr; }
       .row-buttons { grid-template-columns: 1fr; }
-      .triple-buttons { grid-template-columns: 1fr; }
       .quad-grid { grid-template-columns: 1fr; }
       .stats-grid { grid-template-columns: 1fr; }
       .chart-wrap { height: 240px; }
@@ -519,9 +488,11 @@
   </style>
 </head>
 <body>
-  <div id="updateBanner">
+  <div id="updateBanner" style="display:none; position:fixed; top:10px; left:50%; transform:translateX(-50%); background:#111; color:#fff; padding:10px 14px; border-radius:999px; z-index:9999; font-size:13px;">
     새 버전 있음
-    <button type="button" onclick="forceUpdate()">업데이트</button>
+    <button onclick="forceUpdate()" style="margin-left:10px; background:#2563eb; color:white; border:none; padding:6px 10px; border-radius:8px;">
+      업데이트
+    </button>
   </div>
 
   <div class="container">
@@ -536,10 +507,10 @@
     <div class="card">
       <h3>백업 / 복구</h3>
       <div class="row-buttons">
-        <button type="button" onclick="downloadBackup()">백업 다운로드</button>
-        <button type="button" class="secondary" onclick="triggerRestore()">복구 파일 선택</button>
-        <button type="button" class="secondary" onclick="downloadCSV()">CSV 다운로드</button>
-        <button type="button" class="secondary" onclick="restoreAutoBackup()">자동백업 복원</button>
+        <button onclick="downloadBackup()">백업 다운로드</button>
+        <button class="secondary" onclick="triggerRestore()">복구 파일 선택</button>
+        <button class="secondary" onclick="downloadCSV()">CSV 다운로드</button>
+        <button class="secondary" onclick="restoreAutoBackup()">자동백업 복원</button>
       </div>
       <div id="autoBackupInfo" class="hint">자동백업 없음</div>
     </div>
@@ -719,7 +690,7 @@
           <div class="hint">수입은 결제수단을 선택하지 않아도 돼.</div>
         </div>
 
-        <button type="button" id="submitTransactionBtn" onclick="addTransaction()">거래 추가</button>
+        <button type="button" id="addTransactionBtn" onclick="addTransaction()">거래 추가</button>
       </div>
     </div>
 
@@ -730,23 +701,14 @@
   </div>
 
   <input type="file" id="restoreFile" accept=".json" class="hidden" />
-
   <div id="toast" class="toast"></div>
   <div id="undoToast" class="toast"></div>
 
   <script>
-    const APP_VERSION = "v1.0.6";
+    const APP_VERSION = "v1.0.7";
 
-    const STORAGE_KEYS = {
-      transactions: "money",
-      categories: "categories",
-      budgets: "budgets",
-      recentCategories: "recentCategories",
-      fixedExpenses: "fixedExpenses",
-      autoBackup: "money_auto_backup"
-    };
-
-    const DEFAULT_CATEGORIES = [
+    let transactions = JSON.parse(localStorage.getItem("money")) || [];
+    let categories = JSON.parse(localStorage.getItem("categories")) || [
       { main: "수입", sub: "급여", type: "income" },
       { main: "수입", sub: "상여", type: "income" },
       { main: "생활비", sub: "식비", type: "expense" },
@@ -754,71 +716,51 @@
       { main: "고정지출", sub: "관리비", type: "expense" },
       { main: "고정지출", sub: "통신비", type: "expense" }
     ];
+    let budgets = JSON.parse(localStorage.getItem("budgets")) || {};
+    let recentCategories = JSON.parse(localStorage.getItem("recentCategories")) || [];
+    let fixedExpenses = JSON.parse(localStorage.getItem("fixedExpenses")) || [];
 
-    const state = {
-      transactions: loadJSON(STORAGE_KEYS.transactions, []),
-      categories: loadJSON(STORAGE_KEYS.categories, DEFAULT_CATEGORIES),
-      budgets: loadJSON(STORAGE_KEYS.budgets, {}),
-      recentCategories: loadJSON(STORAGE_KEYS.recentCategories, []),
-      fixedExpenses: loadJSON(STORAGE_KEYS.fixedExpenses, []),
+    let editingFixedExpenseId = null;
+    let editingTransactionId = null;
+    let selectedCategory = null;
+    let currentMonthFilter = "";
+    let categoryPieChart = null;
+    let dailyBarChart = null;
+    let lastDeletedItem = null;
+    let undoTimer = null;
 
-      selectedCategory: null,
-      currentMonthFilter: "",
-      editingFixedExpenseId: null,
-      editingTransactionId: null,
-      lastDeletedItem: null,
-      undoTimer: null,
-
-      categoryPieChart: null,
-      dailyBarChart: null
-    };
-
-    function loadJSON(key, fallback) {
-      try {
-        const raw = localStorage.getItem(key);
-        return raw ? JSON.parse(raw) : fallback;
-      } catch {
-        return fallback;
-      }
+    function initVersion() {
+      document.getElementById("versionText").innerText = "버전: " + APP_VERSION;
     }
 
-    function saveAll() {
-      localStorage.setItem(STORAGE_KEYS.transactions, JSON.stringify(state.transactions));
-      localStorage.setItem(STORAGE_KEYS.categories, JSON.stringify(state.categories));
-      localStorage.setItem(STORAGE_KEYS.budgets, JSON.stringify(state.budgets));
-      localStorage.setItem(STORAGE_KEYS.recentCategories, JSON.stringify(state.recentCategories));
-      localStorage.setItem(STORAGE_KEYS.fixedExpenses, JSON.stringify(state.fixedExpenses));
-      saveAutoBackup();
-      renderAutoBackupInfo();
+    function checkUpdate() {
+      fetch(window.location.href, { cache: "no-store" })
+        .then(res => res.text())
+        .then(html => {
+          const match = html.match(/APP_VERSION\s*=\s*["'](.+?)["']/);
+          if (!match) return;
+          const latestVersion = match[1];
+          if (latestVersion !== APP_VERSION) {
+            document.getElementById("updateBanner").style.display = "block";
+          }
+        })
+        .catch(() => {});
     }
 
-    function saveAutoBackup() {
-      const autoBackupData = {
-        transactions: state.transactions,
-        categories: state.categories,
-        budgets: state.budgets,
-        recentCategories: state.recentCategories,
-        fixedExpenses: state.fixedExpenses,
-        savedAt: new Date().toISOString(),
-        version: APP_VERSION
-      };
-
-      localStorage.setItem(STORAGE_KEYS.autoBackup, JSON.stringify(autoBackupData));
+    function forceUpdate() {
+      const url = new URL(window.location.href);
+      url.searchParams.set("v", Date.now().toString());
+      window.location.href = url.toString();
     }
 
-    function formatNumber(value) {
-      return Number(value || 0).toLocaleString("ko-KR");
-    }
-
-    function formatWon(value) {
-      return formatNumber(value) + "원";
+    function forceRefresh() {
+      forceUpdate();
     }
 
     function showToast(message) {
       const toast = document.getElementById("toast");
       toast.innerText = message;
       toast.classList.add("show");
-
       clearTimeout(showToast._timer);
       showToast._timer = setTimeout(() => {
         toast.classList.remove("show");
@@ -838,80 +780,51 @@
     }
 
     function undoDelete() {
-      if (!state.lastDeletedItem) return;
+      if (!lastDeletedItem) return;
 
-      state.transactions.splice(state.lastDeletedItem.index, 0, state.lastDeletedItem.item);
-      state.lastDeletedItem = null;
+      transactions.splice(lastDeletedItem.index, 0, lastDeletedItem.item);
 
-      clearTimeout(state.undoTimer);
       saveAll();
       render();
 
+      lastDeletedItem = null;
       document.getElementById("undoToast").classList.remove("show");
       showToast("복구 완료");
     }
 
-    function initVersion() {
-      document.getElementById("versionText").innerText = "버전: " + APP_VERSION;
+    function formatNumber(value) {
+      return Number(value || 0).toLocaleString("ko-KR");
     }
 
-    function checkUpdate() {
-      fetch(window.location.href, { cache: "no-store" })
-        .then(res => res.text())
-        .then(html => {
-          const match = html.match(/APP_VERSION\s*=\s*["'](.+?)["']/);
-          if (!match) return;
-
-          const latestVersion = match[1];
-          if (latestVersion !== APP_VERSION) {
-            document.getElementById("updateBanner").style.display = "block";
-          }
-        })
-        .catch(() => {});
+    function formatWon(value) {
+      return formatNumber(value) + "원";
     }
 
-    function forceUpdate() {
-      const url = new URL(window.location.href);
-      url.searchParams.set("v", Date.now().toString());
-      window.location.href = url.toString();
+    function saveAll() {
+      localStorage.setItem("money", JSON.stringify(transactions));
+      localStorage.setItem("categories", JSON.stringify(categories));
+      localStorage.setItem("budgets", JSON.stringify(budgets));
+      localStorage.setItem("recentCategories", JSON.stringify(recentCategories));
+      localStorage.setItem("fixedExpenses", JSON.stringify(fixedExpenses));
+      saveAutoBackup();
+      renderAutoBackupInfo();
     }
 
-    function forceRefresh() {
-      forceUpdate();
-    }
-
-    function setTodayToDateInputIfEmpty() {
-      const dateInput = document.getElementById("date");
-      if (!dateInput.value) {
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, "0");
-        const dd = String(today.getDate()).padStart(2, "0");
-        dateInput.value = `${yyyy}-${mm}-${dd}`;
-      }
-    }
-
-    function focusAmountInput() {
-      document.getElementById("amount").focus();
-    }
-
-    function setCurrentMonth() {
-      const d = new Date();
-      const m = String(d.getMonth() + 1).padStart(2, "0");
-      state.currentMonthFilter = `${d.getFullYear()}-${m}`;
-      document.getElementById("monthFilter").value = state.currentMonthFilter;
-      render();
-    }
-
-    function clearMonthFilter() {
-      state.currentMonthFilter = "";
-      document.getElementById("monthFilter").value = "";
-      render();
+    function saveAutoBackup() {
+      const autoBackupData = {
+        transactions,
+        categories,
+        budgets,
+        recentCategories,
+        savedAt: new Date().toISOString(),
+        version: APP_VERSION
+      };
+      localStorage.setItem("money_auto_backup", JSON.stringify(autoBackupData));
     }
 
     function renderAutoBackupInfo() {
       const el = document.getElementById("autoBackupInfo");
-      const raw = localStorage.getItem(STORAGE_KEYS.autoBackup);
+      const raw = localStorage.getItem("money_auto_backup");
 
       if (!raw) {
         el.innerText = "자동백업 없음";
@@ -921,13 +834,11 @@
       try {
         const parsed = JSON.parse(raw);
         const date = new Date(parsed.savedAt);
-
         const yyyy = date.getFullYear();
         const mm = String(date.getMonth() + 1).padStart(2, "0");
         const dd = String(date.getDate()).padStart(2, "0");
         const hh = String(date.getHours()).padStart(2, "0");
         const min = String(date.getMinutes()).padStart(2, "0");
-
         el.innerText = `마지막 자동백업: ${yyyy}-${mm}-${dd} ${hh}:${min}`;
       } catch {
         el.innerText = "자동백업 정보 오류";
@@ -935,7 +846,7 @@
     }
 
     function restoreAutoBackup() {
-      const raw = localStorage.getItem(STORAGE_KEYS.autoBackup);
+      const raw = localStorage.getItem("money_auto_backup");
 
       if (!raw) {
         alert("자동백업 데이터가 없어");
@@ -947,15 +858,12 @@
 
       try {
         const parsed = JSON.parse(raw);
-
-        state.transactions = parsed.transactions || [];
-        state.categories = parsed.categories || [];
-        state.budgets = parsed.budgets || {};
-        state.recentCategories = parsed.recentCategories || [];
-        state.fixedExpenses = parsed.fixedExpenses || [];
-        state.selectedCategory = null;
-        state.editingFixedExpenseId = null;
-        state.editingTransactionId = null;
+        transactions = parsed.transactions || [];
+        categories = parsed.categories || [];
+        budgets = parsed.budgets || {};
+        recentCategories = parsed.recentCategories || [];
+        selectedCategory = null;
+        editingTransactionId = null;
 
         saveAll();
         renderCategories();
@@ -963,7 +871,7 @@
         populateFixedCategoryOptions();
         renderFixedExpenseList();
         updatePaymentVisibility();
-        resetTransactionFormButton();
+        updateTransactionButton();
         render();
 
         alert("자동백업 복원 완료");
@@ -972,294 +880,14 @@
       }
     }
 
-    function setBudget() {
-      const budget = parseInt(document.getElementById("budgetInput").value, 10);
-
-      if (!state.currentMonthFilter) {
-        alert("먼저 월을 선택해");
-        return;
-      }
-
-      if (!budget || budget <= 0) {
-        alert("예산을 입력해");
-        return;
-      }
-
-      state.budgets[state.currentMonthFilter] = budget;
-      document.getElementById("budgetInput").value = "";
-
-      saveAll();
-      render();
-      showToast("예산 저장 완료");
-    }
-
-    function addCategory() {
-      const main = document.getElementById("mainInput").value.trim();
-      const sub = document.getElementById("subInput").value.trim();
-
-      if (!main || !sub) {
-        alert("대분류와 중분류를 입력해");
-        return;
-      }
-
-      const exists = state.categories.some(cat => cat.main === main && cat.sub === sub);
-      if (exists) {
-        alert("이미 있는 카테고리야");
-        return;
-      }
-
-      const newCategory = {
-        main,
-        sub,
-        type: main === "수입" ? "income" : "expense"
-      };
-
-      state.categories.push(newCategory);
-      state.selectedCategory = newCategory;
-
-      document.getElementById("mainInput").value = "";
-      document.getElementById("subInput").value = "";
-
-      saveAll();
-      renderCategories();
-      renderRecentCategories();
-      populateFixedCategoryOptions();
-      updatePaymentVisibility();
-      updateSelectedInfo();
-      showToast("카테고리 추가 완료");
-    }
-
-    function deleteCategory(main, sub) {
-      const ok = confirm(`${main} > ${sub} 카테고리를 삭제할까?`);
-      if (!ok) return;
-
-      state.categories = state.categories.filter(cat => !(cat.main === main && cat.sub === sub));
-      state.recentCategories = state.recentCategories.filter(item => !(item.main === main && item.sub === sub));
-
-      if (state.selectedCategory && state.selectedCategory.main === main && state.selectedCategory.sub === sub) {
-        state.selectedCategory = null;
-      }
-
-      saveAll();
-      renderCategories();
-      renderRecentCategories();
-      populateFixedCategoryOptions();
-      updatePaymentVisibility();
-      updateSelectedInfo();
-      showToast("카테고리 삭제 완료");
-    }
-
-    function selectCategory(cat) {
-      state.selectedCategory = cat;
-      updateSelectedInfo();
-      renderCategories();
-      updatePaymentVisibility();
-      focusAmountInput();
-    }
-
-    function updateSelectedInfo() {
-      const el = document.getElementById("selectedInfo");
-      if (!state.selectedCategory) {
-        el.innerText = "선택 안됨";
-      } else {
-        el.innerText = `선택: ${state.selectedCategory.main} > ${state.selectedCategory.sub}`;
-      }
-    }
-
-    function renderCategories() {
-      const area = document.getElementById("categoryArea");
-      area.innerHTML = "";
-
-      state.categories.forEach(cat => {
-        const row = document.createElement("div");
-        row.className = "category-row";
-
-        const btn = document.createElement("button");
-        btn.className = "category-btn";
-        btn.textContent = `${cat.main} > ${cat.sub}`;
-
-        if (
-          state.selectedCategory &&
-          state.selectedCategory.main === cat.main &&
-          state.selectedCategory.sub === cat.sub
-        ) {
-          btn.classList.add("selected");
-        }
-
-        btn.onclick = () => selectCategory(cat);
-
-        const del = document.createElement("button");
-        del.className = "category-delete-btn";
-        del.textContent = "삭제";
-        del.onclick = () => deleteCategory(cat.main, cat.sub);
-
-        row.appendChild(btn);
-        row.appendChild(del);
-        area.appendChild(row);
-      });
-    }
-
-    function pushRecentCategory(cat) {
-      state.recentCategories = state.recentCategories.filter(
-        item => !(item.main === cat.main && item.sub === cat.sub)
-      );
-
-      state.recentCategories.unshift({
-        main: cat.main,
-        sub: cat.sub,
-        type: cat.type
-      });
-
-      state.recentCategories = state.recentCategories.slice(0, 5);
-    }
-
-    function renderRecentCategories() {
-      const area = document.getElementById("recentArea");
-      const empty = document.getElementById("recentEmpty");
-
-      area.innerHTML = "";
-
-      if (state.recentCategories.length === 0) {
-        empty.style.display = "block";
-        return;
-      }
-
-      empty.style.display = "none";
-
-      state.recentCategories.forEach(cat => {
-        const btn = document.createElement("button");
-        btn.className = "recent-chip";
-        btn.textContent = `${cat.main} > ${cat.sub}`;
-        btn.onclick = () => selectCategory(cat);
-        area.appendChild(btn);
-      });
-    }
-
-    function updatePaymentVisibility() {
-      const wrap = document.getElementById("paymentWrap");
-      if (state.selectedCategory && state.selectedCategory.type === "income") {
-        wrap.classList.add("hidden");
-      } else {
-        wrap.classList.remove("hidden");
-      }
-    }
-
-    function resetTransactionFormButton() {
-      const btn = document.getElementById("submitTransactionBtn");
-      btn.textContent = state.editingTransactionId ? "거래 수정 완료" : "거래 추가";
-    }
-
-    function clearTransactionForm() {
-      document.getElementById("amount").value = "";
-      document.getElementById("memo").value = "";
-      document.getElementById("paymentMethod").value = "";
-      setTodayToDateInputIfEmpty();
-    }
-
-    function addTransaction() {
-      const amount = parseInt(document.getElementById("amount").value, 10);
-      const memo = document.getElementById("memo").value.trim();
-      const date = document.getElementById("date").value;
-      const payment = document.getElementById("paymentMethod").value;
-
-      if (!state.selectedCategory || !amount || !date) {
-        alert("카테고리, 금액, 날짜를 입력해");
-        return;
-      }
-
-      if (state.selectedCategory.type === "expense" && !payment) {
-        alert("지출은 결제수단을 선택해야 해");
-        return;
-      }
-
-      if (state.editingTransactionId) {
-        state.transactions = state.transactions.map(t =>
-          t.id === state.editingTransactionId
-            ? {
-                ...t,
-                main: state.selectedCategory.main,
-                sub: state.selectedCategory.sub,
-                type: state.selectedCategory.type,
-                amount,
-                memo,
-                date,
-                payment: state.selectedCategory.type === "income" ? "-" : payment
-              }
-            : t
-        );
-
-        state.editingTransactionId = null;
-        showToast("수정 완료");
-      } else {
-        state.transactions.push({
-          id: Date.now(),
-          main: state.selectedCategory.main,
-          sub: state.selectedCategory.sub,
-          type: state.selectedCategory.type,
-          amount,
-          memo,
-          date,
-          payment: state.selectedCategory.type === "income" ? "-" : payment
-        });
-
-        showToast("거래 저장 완료");
-      }
-
-      pushRecentCategory(state.selectedCategory);
-      clearTransactionForm();
-      resetTransactionFormButton();
-      saveAll();
-      render();
-      renderRecentCategories();
-      focusAmountInput();
-    }
-
-    function editTransaction(id) {
-      const t = state.transactions.find(item => item.id === id);
-      if (!t) return;
-
-      state.editingTransactionId = id;
-
-      const cat = state.categories.find(c => c.main === t.main && c.sub === t.sub);
-      if (cat) selectCategory(cat);
-
-      document.getElementById("amount").value = t.amount;
-      document.getElementById("memo").value = t.memo || "";
-      document.getElementById("date").value = t.date;
-      document.getElementById("paymentMethod").value = t.payment === "-" ? "" : t.payment;
-
-      resetTransactionFormButton();
-      showToast("수정 모드");
-    }
-
-    function deleteItem(id) {
-      const index = state.transactions.findIndex(t => t.id === id);
-      if (index === -1) return;
-
-      state.lastDeletedItem = {
-        item: state.transactions[index],
-        index
-      };
-
-      state.transactions.splice(index, 1);
-
-      saveAll();
-      render();
-      showUndoToast();
-
-      clearTimeout(state.undoTimer);
-      state.undoTimer = setTimeout(() => {
-        state.lastDeletedItem = null;
-      }, 3000);
-    }
-
     function populateFixedCategoryOptions() {
       const select = document.getElementById("fixedCategory");
-      const currentValue = select.value;
+      if (!select) return;
 
+      const currentValue = select.value;
       select.innerHTML = '<option value="">카테고리 선택</option>';
 
-      state.categories
+      categories
         .filter(cat => cat.type === "expense")
         .forEach(cat => {
           const option = document.createElement("option");
@@ -1286,16 +914,16 @@
 
       const [main, sub] = categoryValue.split("|||");
 
-      if (state.editingFixedExpenseId) {
-        state.fixedExpenses = state.fixedExpenses.map(item =>
-          item.id === state.editingFixedExpenseId
+      if (editingFixedExpenseId) {
+        fixedExpenses = fixedExpenses.map(item =>
+          item.id === editingFixedExpenseId
             ? { ...item, name, amount, main, sub, payment }
             : item
         );
-        state.editingFixedExpenseId = null;
+        editingFixedExpenseId = null;
         showToast("고정비 수정 완료");
       } else {
-        state.fixedExpenses.push({
+        fixedExpenses.push({
           id: Date.now(),
           name,
           amount,
@@ -1316,49 +944,16 @@
       renderFixedExpenseList();
     }
 
-    function deleteFixedExpense(id) {
-      const ok = confirm("이 고정비를 삭제할까?");
-      if (!ok) return;
-
-      state.fixedExpenses = state.fixedExpenses.filter(item => item.id !== id);
-      saveAll();
-      renderFixedExpenseList();
-      showToast("고정비 삭제 완료");
-    }
-
-    function editFixedExpense(id) {
-      const item = state.fixedExpenses.find(f => f.id === id);
-      if (!item) return;
-
-      state.editingFixedExpenseId = id;
-      document.getElementById("fixedName").value = item.name;
-      document.getElementById("fixedAmount").value = item.amount;
-      document.getElementById("fixedCategory").value = `${item.main}|||${item.sub}`;
-      document.getElementById("fixedPayment").value = item.payment;
-
-      showToast("고정비 수정 모드");
-    }
-
-    function toggleFixedExpenseHidden(id) {
-      state.fixedExpenses = state.fixedExpenses.map(item =>
-        item.id === id ? { ...item, hidden: !item.hidden } : item
-      );
-
-      saveAll();
-      renderFixedExpenseList();
-      showToast("고정비 상태 변경");
-    }
-
     function renderFixedExpenseList() {
       const area = document.getElementById("fixedExpenseList");
       area.innerHTML = "";
 
-      if (state.fixedExpenses.length === 0) {
+      if (fixedExpenses.length === 0) {
         area.innerHTML = '<div class="muted">등록된 고정비가 없어</div>';
         return;
       }
 
-      state.fixedExpenses.forEach(item => {
+      fixedExpenses.forEach(item => {
         const div = document.createElement("div");
         div.className = "item-box";
 
@@ -1374,12 +969,10 @@
             <div class="pill">결제수단: ${item.payment}</div>
             <div class="pill">${item.hidden ? "숨김" : "표시중"}</div>
           </div>
-          <div class="triple-buttons" style="margin-top:10px;">
+          <div class="row-buttons" style="margin-top:10px;">
             <button type="button" class="secondary" onclick="editFixedExpense(${item.id})">수정</button>
-            <button type="button" class="secondary" onclick="toggleFixedExpenseHidden(${item.id})">
-              ${item.hidden ? "숨김 해제" : "숨기기"}
-            </button>
-            <button type="button" class="danger" onclick="deleteFixedExpense(${item.id})">삭제</button>
+            <button type="button" class="secondary" onclick="toggleFixedExpenseHidden(${item.id})">${item.hidden ? "숨김 해제" : "숨기기"}</button>
+            <button type="button" class="delete-btn" onclick="deleteFixedExpense(${item.id})">삭제</button>
           </div>
         `;
 
@@ -1387,13 +980,46 @@
       });
     }
 
+    function deleteFixedExpense(id) {
+      const ok = confirm("이 고정비를 삭제할까?");
+      if (!ok) return;
+
+      fixedExpenses = fixedExpenses.filter(item => item.id !== id);
+      saveAll();
+      renderFixedExpenseList();
+      showToast("고정비 삭제 완료");
+    }
+
+    function editFixedExpense(id) {
+      const item = fixedExpenses.find(f => f.id === id);
+      if (!item) return;
+
+      editingFixedExpenseId = id;
+      document.getElementById("fixedName").value = item.name;
+      document.getElementById("fixedAmount").value = item.amount;
+      document.getElementById("fixedCategory").value = `${item.main}|||${item.sub}`;
+      document.getElementById("fixedPayment").value = item.payment;
+
+      showToast("고정비 수정 모드");
+    }
+
+    function toggleFixedExpenseHidden(id) {
+      fixedExpenses = fixedExpenses.map(item =>
+        item.id === id ? { ...item, hidden: !item.hidden } : item
+      );
+
+      saveAll();
+      renderFixedExpenseList();
+      showToast("고정비 상태 변경");
+    }
+
     function applyFixedExpenses() {
-      if (!state.currentMonthFilter) {
+      if (!currentMonthFilter) {
         alert("먼저 월을 선택해");
         return;
       }
 
-      const visibleItems = state.fixedExpenses.filter(item => !item.hidden);
+      const visibleItems = fixedExpenses.filter(item => !item.hidden);
 
       if (visibleItems.length === 0) {
         alert("반영할 고정비가 없어");
@@ -1403,8 +1029,8 @@
       let addedCount = 0;
 
       visibleItems.forEach(item => {
-        const alreadyExists = state.transactions.some(t =>
-          t.date.startsWith(state.currentMonthFilter) &&
+        const alreadyExists = transactions.some(t =>
+          t.date.startsWith(currentMonthFilter) &&
           t.type === "expense" &&
           t.main === item.main &&
           t.sub === item.sub &&
@@ -1414,14 +1040,14 @@
         );
 
         if (!alreadyExists) {
-          state.transactions.push({
+          transactions.push({
             id: Date.now() + Math.floor(Math.random() * 100000),
             main: item.main,
             sub: item.sub,
             type: "expense",
             amount: item.amount,
             memo: `[고정비] ${item.name}`,
-            date: `${state.currentMonthFilter}-01`,
+            date: `${currentMonthFilter}-01`,
             payment: item.payment
           });
           addedCount++;
@@ -1439,10 +1065,10 @@
     }
 
     function getFilteredTransactions() {
-      let result = [...state.transactions];
+      let result = [...transactions];
 
-      if (state.currentMonthFilter) {
-        result = result.filter(t => t.date.startsWith(state.currentMonthFilter));
+      if (currentMonthFilter) {
+        result = result.filter(t => t.date.startsWith(currentMonthFilter));
       }
 
       const keyword = document.getElementById("searchInput").value.trim().toLowerCase();
@@ -1452,8 +1078,8 @@
 
       if (keyword) {
         result = result.filter(t =>
-          (t.main || "").toLowerCase().includes(keyword) ||
-          (t.sub || "").toLowerCase().includes(keyword) ||
+          t.main.toLowerCase().includes(keyword) ||
+          t.sub.toLowerCase().includes(keyword) ||
           (t.memo || "").toLowerCase().includes(keyword)
         );
       }
@@ -1488,15 +1114,312 @@
       showToast("초기화 완료");
     }
 
+    function setTodayToDateInputIfEmpty() {
+      const dateInput = document.getElementById("date");
+      if (!dateInput.value) {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, "0");
+        const dd = String(today.getDate()).padStart(2, "0");
+        dateInput.value = `${yyyy}-${mm}-${dd}`;
+      }
+    }
+
+    function focusAmountInput() {
+      document.getElementById("amount").focus();
+    }
+
+    function setCurrentMonth() {
+      const d = new Date();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      currentMonthFilter = `${d.getFullYear()}-${m}`;
+      document.getElementById("monthFilter").value = currentMonthFilter;
+      render();
+    }
+
+    function clearMonthFilter() {
+      currentMonthFilter = "";
+      document.getElementById("monthFilter").value = "";
+      render();
+    }
+
+    function setBudget() {
+      const budget = parseInt(document.getElementById("budgetInput").value, 10);
+
+      if (!currentMonthFilter) {
+        alert("먼저 월을 선택해");
+        return;
+      }
+
+      if (!budget || budget <= 0) {
+        alert("예산을 입력해");
+        return;
+      }
+
+      budgets[currentMonthFilter] = budget;
+      document.getElementById("budgetInput").value = "";
+      saveAll();
+      render();
+      showToast("예산 저장 완료");
+    }
+
+    function addCategory() {
+      const main = document.getElementById("mainInput").value.trim();
+      const sub = document.getElementById("subInput").value.trim();
+
+      if (!main || !sub) {
+        alert("대분류와 중분류를 입력해");
+        return;
+      }
+
+      const exists = categories.some(cat => cat.main === main && cat.sub === sub);
+      if (exists) {
+        alert("이미 있는 카테고리야");
+        return;
+      }
+
+      const newCategory = {
+        main,
+        sub,
+        type: main === "수입" ? "income" : "expense"
+      };
+
+      categories.push(newCategory);
+      selectedCategory = newCategory;
+
+      document.getElementById("mainInput").value = "";
+      document.getElementById("subInput").value = "";
+
+      saveAll();
+      renderCategories();
+      renderRecentCategories();
+      populateFixedCategoryOptions();
+      updatePaymentVisibility();
+      updateTransactionButton();
+      showToast("카테고리 추가 완료");
+    }
+
+    function deleteCategory(main, sub) {
+      const ok = confirm(`${main} > ${sub} 카테고리를 삭제할까?`);
+      if (!ok) return;
+
+      categories = categories.filter(cat => !(cat.main === main && cat.sub === sub));
+      recentCategories = recentCategories.filter(item => !(item.main === main && item.sub === sub));
+
+      if (selectedCategory && selectedCategory.main === main && selectedCategory.sub === sub) {
+        selectedCategory = null;
+        document.getElementById("selectedInfo").innerText = "선택 안됨";
+      }
+
+      saveAll();
+      renderCategories();
+      renderRecentCategories();
+      populateFixedCategoryOptions();
+      updatePaymentVisibility();
+      updateTransactionButton();
+      showToast("카테고리 삭제 완료");
+    }
+
+    function selectCategory(cat) {
+      selectedCategory = cat;
+      document.getElementById("selectedInfo").innerText = `선택: ${cat.main} > ${cat.sub}`;
+      renderCategories();
+      updatePaymentVisibility();
+      focusAmountInput();
+    }
+
+    function renderCategories() {
+      const area = document.getElementById("categoryArea");
+      area.innerHTML = "";
+
+      categories.forEach(cat => {
+        const row = document.createElement("div");
+        row.className = "category-row";
+
+        const btn = document.createElement("button");
+        btn.className = "category-btn";
+        btn.textContent = `${cat.main} > ${cat.sub}`;
+
+        if (
+          selectedCategory &&
+          selectedCategory.main === cat.main &&
+          selectedCategory.sub === cat.sub
+        ) {
+          btn.classList.add("selected");
+        }
+
+        btn.onclick = () => selectCategory(cat);
+
+        const del = document.createElement("button");
+        del.className = "category-delete-btn";
+        del.textContent = "삭제";
+        del.onclick = () => deleteCategory(cat.main, cat.sub);
+
+        row.appendChild(btn);
+        row.appendChild(del);
+        area.appendChild(row);
+      });
+    }
+
+    function pushRecentCategory(cat) {
+      recentCategories = recentCategories.filter(
+        item => !(item.main === cat.main && item.sub === cat.sub)
+      );
+      recentCategories.unshift({
+        main: cat.main,
+        sub: cat.sub,
+        type: cat.type
+      });
+      recentCategories = recentCategories.slice(0, 5);
+    }
+
+    function renderRecentCategories() {
+      const area = document.getElementById("recentArea");
+      const empty = document.getElementById("recentEmpty");
+      area.innerHTML = "";
+
+      if (recentCategories.length === 0) {
+        empty.style.display = "block";
+        return;
+      }
+
+      empty.style.display = "none";
+
+      recentCategories.forEach(cat => {
+        const btn = document.createElement("button");
+        btn.className = "recent-chip";
+        btn.textContent = `${cat.main} > ${cat.sub}`;
+        btn.onclick = () => selectCategory(cat);
+        area.appendChild(btn);
+      });
+    }
+
+    function updatePaymentVisibility() {
+      const wrap = document.getElementById("paymentWrap");
+      if (selectedCategory && selectedCategory.type === "income") {
+        wrap.classList.add("hidden");
+      } else {
+        wrap.classList.remove("hidden");
+      }
+    }
+
+    function updateTransactionButton() {
+      const btn = document.getElementById("addTransactionBtn");
+      btn.innerText = editingTransactionId ? "거래 수정 완료" : "거래 추가";
+    }
+
+    function clearTransactionForm() {
+      document.getElementById("amount").value = "";
+      document.getElementById("memo").value = "";
+      document.getElementById("paymentMethod").value = "";
+      setTodayToDateInputIfEmpty();
+    }
+
+    function addTransaction() {
+      const amount = parseInt(document.getElementById("amount").value, 10);
+      const memo = document.getElementById("memo").value.trim();
+      const date = document.getElementById("date").value;
+      const payment = document.getElementById("paymentMethod").value;
+
+      if (!selectedCategory || !amount || !date) {
+        alert("카테고리, 금액, 날짜를 입력해");
+        return;
+      }
+
+      if (selectedCategory.type === "expense" && !payment) {
+        alert("지출은 결제수단을 선택해야 해");
+        return;
+      }
+
+      if (editingTransactionId) {
+        transactions = transactions.map(t =>
+          t.id === editingTransactionId
+            ? {
+                ...t,
+                main: selectedCategory.main,
+                sub: selectedCategory.sub,
+                type: selectedCategory.type,
+                amount,
+                memo,
+                date,
+                payment: selectedCategory.type === "income" ? "-" : payment
+              }
+            : t
+        );
+
+        editingTransactionId = null;
+        updateTransactionButton();
+        showToast("수정 완료");
+      } else {
+        transactions.push({
+          id: Date.now(),
+          main: selectedCategory.main,
+          sub: selectedCategory.sub,
+          type: selectedCategory.type,
+          amount,
+          memo,
+          date,
+          payment: selectedCategory.type === "income" ? "-" : payment
+        });
+
+        showToast("거래 저장 완료");
+      }
+
+      pushRecentCategory(selectedCategory);
+      clearTransactionForm();
+      saveAll();
+      render();
+      renderRecentCategories();
+      focusAmountInput();
+    }
+
+    function editTransaction(id) {
+      const t = transactions.find(item => item.id === id);
+      if (!t) return;
+
+      editingTransactionId = id;
+      updateTransactionButton();
+
+      const cat = categories.find(c => c.main === t.main && c.sub === t.sub);
+      if (cat) selectCategory(cat);
+
+      document.getElementById("amount").value = t.amount;
+      document.getElementById("memo").value = t.memo || "";
+      document.getElementById("date").value = t.date;
+      document.getElementById("paymentMethod").value = t.payment === "-" ? "" : t.payment;
+
+      showToast("수정 모드");
+    }
+
+    function deleteItem(id) {
+      const index = transactions.findIndex(t => t.id === id);
+      if (index === -1) return;
+
+      lastDeletedItem = {
+        item: transactions[index],
+        index: index
+      };
+
+      transactions.splice(index, 1);
+      saveAll();
+      render();
+      showUndoToast();
+
+      clearTimeout(undoTimer);
+      undoTimer = setTimeout(() => {
+        lastDeletedItem = null;
+      }, 3000);
+    }
+
     function renderBudget(filteredTransactions) {
       const budgetInfo = document.getElementById("budgetInfo");
       const expense = filteredTransactions
         .filter(t => t.type === "expense")
         .reduce((sum, t) => sum + t.amount, 0);
 
-      const budget = state.currentMonthFilter ? (state.budgets[state.currentMonthFilter] || 0) : 0;
+      const budget = currentMonthFilter ? (budgets[currentMonthFilter] || 0) : 0;
 
-      if (!state.currentMonthFilter) {
+      if (!currentMonthFilter) {
         budgetInfo.innerHTML = "월을 선택하면 예산을 볼 수 있어";
         return;
       }
@@ -1549,12 +1472,9 @@
         categoryMap[key] += t.amount;
       });
 
-      const top3 = Object.entries(categoryMap)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 3);
+      const top3 = Object.entries(categoryMap).sort((a, b) => b[1] - a[1]).slice(0, 3);
 
       top3Area.innerHTML = "";
-
       top3.forEach((item, index) => {
         const div = document.createElement("div");
         div.className = "rank-item";
@@ -1618,7 +1538,6 @@
       }
 
       const paymentMap = {};
-
       expenseOnly.forEach(t => {
         if (!paymentMap[t.payment]) paymentMap[t.payment] = 0;
         paymentMap[t.payment] += t.amount;
@@ -1637,9 +1556,9 @@
       const emptyDiv = document.getElementById("categoryPieEmpty");
       const canvas = document.getElementById("categoryPieChart");
 
-      if (state.categoryPieChart) {
-        state.categoryPieChart.destroy();
-        state.categoryPieChart = null;
+      if (categoryPieChart) {
+        categoryPieChart.destroy();
+        categoryPieChart = null;
       }
 
       if (expenseOnly.length === 0) {
@@ -1656,13 +1575,11 @@
         map[key] += t.amount;
       });
 
-      state.categoryPieChart = new Chart(canvas, {
+      categoryPieChart = new Chart(canvas, {
         type: "pie",
         data: {
           labels: Object.keys(map),
-          datasets: [{
-            data: Object.values(map)
-          }]
+          datasets: [{ data: Object.values(map) }]
         },
         options: {
           responsive: true,
@@ -1686,9 +1603,9 @@
       const emptyDiv = document.getElementById("dailyBarEmpty");
       const canvas = document.getElementById("dailyBarChart");
 
-      if (state.dailyBarChart) {
-        state.dailyBarChart.destroy();
-        state.dailyBarChart = null;
+      if (dailyBarChart) {
+        dailyBarChart.destroy();
+        dailyBarChart = null;
       }
 
       if (expenseOnly.length === 0) {
@@ -1707,7 +1624,7 @@
       const labels = Object.keys(map).sort();
       const values = labels.map(date => map[date]);
 
-      state.dailyBarChart = new Chart(canvas, {
+      dailyBarChart = new Chart(canvas, {
         type: "bar",
         data: {
           labels,
@@ -1766,8 +1683,8 @@
               </div>
             </div>
             <div style="display:flex; gap:6px;">
-              <button type="button" class="secondary" onclick="editTransaction(${t.id})">수정</button>
-              <button type="button" class="danger" onclick="deleteItem(${t.id})">삭제</button>
+              <button class="secondary" onclick="editTransaction(${t.id})">수정</button>
+              <button class="delete-btn" onclick="deleteItem(${t.id})">삭제</button>
             </div>
           </div>
           <div class="item-meta">
@@ -1807,11 +1724,11 @@
 
     function downloadBackup() {
       const backupData = {
-        transactions: state.transactions,
-        categories: state.categories,
-        budgets: state.budgets,
-        recentCategories: state.recentCategories,
-        fixedExpenses: state.fixedExpenses,
+        transactions,
+        categories,
+        budgets,
+        recentCategories,
+        fixedExpenses,
         exportedAt: new Date().toISOString(),
         version: APP_VERSION
       };
@@ -1832,26 +1749,23 @@
     }
 
     function downloadCSV() {
-      if (state.transactions.length === 0) {
+      if (transactions.length === 0) {
         alert("데이터가 없어");
         return;
       }
 
-      const header = ["날짜", "구분", "대분류", "중분류", "내용", "금액", "결제수단"];
-
-      const rows = state.transactions.map(t => [
+      const header = ["날짜", "구분", "대분류", "중분류", "금액", "결제수단", "내용"];
+      const rows = transactions.map(t => [
         t.date,
         t.type === "income" ? "수입" : "지출",
         t.main,
         t.sub,
-        (t.memo || "").replaceAll(",", " "),
         t.amount,
-        t.payment
+        t.payment,
+        `"${(t.memo || "").replace(/"/g, '""')}"`
       ]);
 
-      const csvContent = [header, ...rows]
-        .map(row => row.join(","))
-        .join("\n");
+      const csvContent = [header, ...rows].map(row => row.join(",")).join("\n");
 
       const blob = new Blob(["\uFEFF" + csvContent], {
         type: "text/csv;charset=utf-8;"
@@ -1891,14 +1805,14 @@
           const ok = confirm("현재 데이터를 덮어쓰고 복구할까?");
           if (!ok) return;
 
-          state.transactions = parsed.transactions || [];
-          state.categories = parsed.categories || [];
-          state.budgets = parsed.budgets || {};
-          state.recentCategories = parsed.recentCategories || [];
-          state.fixedExpenses = parsed.fixedExpenses || [];
-          state.selectedCategory = null;
-          state.editingTransactionId = null;
-          state.editingFixedExpenseId = null;
+          transactions = parsed.transactions || [];
+          categories = parsed.categories || [];
+          budgets = parsed.budgets || {};
+          recentCategories = parsed.recentCategories || [];
+          fixedExpenses = parsed.fixedExpenses || [];
+          selectedCategory = null;
+          editingTransactionId = null;
+          editingFixedExpenseId = null;
 
           saveAll();
           renderCategories();
@@ -1906,8 +1820,7 @@
           populateFixedCategoryOptions();
           renderFixedExpenseList();
           updatePaymentVisibility();
-          updateSelectedInfo();
-          resetTransactionFormButton();
+          updateTransactionButton();
           render();
 
           alert("복구 완료");
@@ -1922,7 +1835,7 @@
     }
 
     document.getElementById("monthFilter").addEventListener("change", function(e) {
-      state.currentMonthFilter = e.target.value;
+      currentMonthFilter = e.target.value;
       render();
     });
 
@@ -1935,15 +1848,15 @@
     initVersion();
     renderCategories();
     renderRecentCategories();
-    updateSelectedInfo();
     setCurrentMonth();
     setTodayToDateInputIfEmpty();
     updatePaymentVisibility();
+    updateTransactionButton();
     saveAutoBackup();
     renderAutoBackupInfo();
     populateFixedCategoryOptions();
     renderFixedExpenseList();
-    resetTransactionFormButton();
+    render();
     checkUpdate();
   </script>
 </body>
