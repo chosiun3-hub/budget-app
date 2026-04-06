@@ -701,11 +701,16 @@
 
     <div class="card">
       <h3>카테고리 추가</h3>
+      
       <div class="stack">
-        <input id="mainInput" placeholder="대분류 (예: 생활비, 수입)" />
-        <input id="subInput" placeholder="중분류 (예: 식비, 급여)" />
-        <button type="button" onclick="addCategory()">카테고리 추가</button>
-      </div>
+  <input id="mainInput" placeholder="대분류 (예: 생활비, 수입)" />
+  <input id="subInput" placeholder="중분류 (예: 식비, 급여)" />
+  <div class="row-buttons">
+    <button type="button" onclick="addCategory()">카테고리 저장</button>
+    <button type="button" class="secondary" onclick="cancelCategoryEdit()">수정 취소</button>
+  </div>
+</div>
+      
       <div class="hint">대분류가 '수입'이면 수입 카테고리로 저장돼.</div>
     </div>
 
@@ -746,7 +751,7 @@
   <div id="undoToast" class="toast"></div>
 
   <script>
-    const APP_VERSION = "v1.0.8";
+    const APP_VERSION = "v1.1.0";
 
     let transactions = JSON.parse(localStorage.getItem("money")) || [];
     let categories = JSON.parse(localStorage.getItem("categories")) || [
@@ -766,6 +771,8 @@
     let fixedExpenseCollapsed = JSON.parse(localStorage.getItem("fixedExpenseCollapsed")) || false;
     let selectedCategory = null;
     let currentMonthFilter = "";
+    let editingCategoryKey = null;
+    let collapsedCategoryGroups = JSON.parse(localStorage.getItem("collapsedCategoryGroups")) || {};
     let categoryPieChart = null;
     let dailyBarChart = null;
     let lastDeletedItem = null;
@@ -795,6 +802,31 @@
       window.location.href = url.toString();
     }
 
+    function toggleCategoryGroup(main) {
+  collapsedCategoryGroups[main] = !collapsedCategoryGroups[main];
+  localStorage.setItem("collapsedCategoryGroups", JSON.stringify(collapsedCategoryGroups));
+  renderCategories();
+}
+
+function startEditCategory(main, sub) {
+  const cat = categories.find(c => c.main === main && c.sub === sub);
+  if (!cat) return;
+
+  editingCategoryKey = `${main}|||${sub}`;
+
+  document.getElementById("mainInput").value = cat.main;
+  document.getElementById("subInput").value = cat.sub;
+
+  showToast("카테고리 수정 모드");
+}
+
+function cancelCategoryEdit() {
+  editingCategoryKey = null;
+  document.getElementById("mainInput").value = "";
+  document.getElementById("subInput").value = "";
+  showToast("카테고리 수정 취소");
+}
+    
     function forceRefresh() {
       forceUpdate();
     }
@@ -1231,41 +1263,111 @@ function renderFixedExpenseList() {
     }
 
     function addCategory() {
-      const main = document.getElementById("mainInput").value.trim();
-      const sub = document.getElementById("subInput").value.trim();
+  const main = document.getElementById("mainInput").value.trim();
+  const sub = document.getElementById("subInput").value.trim();
 
-      if (!main || !sub) {
-        alert("대분류와 중분류를 입력해");
-        return;
-      }
+  if (!main || !sub) {
+    alert("대분류와 중분류를 입력해");
+    return;
+  }
 
-      const exists = categories.some(cat => cat.main === main && cat.sub === sub);
-      if (exists) {
-        alert("이미 있는 카테고리야");
-        return;
-      }
+  const newType = main === "수입" ? "income" : "expense";
 
-      const newCategory = {
-        main,
-        sub,
-        type: main === "수입" ? "income" : "expense"
-      };
+  if (editingCategoryKey) {
+    const [oldMain, oldSub] = editingCategoryKey.split("|||");
 
-      categories.push(newCategory);
-      selectedCategory = newCategory;
+    const duplicated = categories.some(cat =>
+      cat.main === main &&
+      cat.sub === sub &&
+      !(cat.main === oldMain && cat.sub === oldSub)
+    );
 
-      document.getElementById("mainInput").value = "";
-      document.getElementById("subInput").value = "";
-
-      saveAll();
-      renderCategories();
-      renderRecentCategories();
-      populateFixedCategoryOptions();
-      updatePaymentVisibility();
-      updateTransactionButton();
-      showToast("카테고리 추가 완료");
+    if (duplicated) {
+      alert("이미 있는 카테고리야");
+      return;
     }
 
+    categories = categories.map(cat => {
+      if (cat.main === oldMain && cat.sub === oldSub) {
+        return { main, sub, type: newType };
+      }
+      return cat;
+    });
+
+    transactions = transactions.map(t => {
+      if (t.main === oldMain && t.sub === oldSub) {
+        return {
+          ...t,
+          main,
+          sub,
+          type: newType
+        };
+      }
+      return t;
+    });
+
+    recentCategories = recentCategories.map(item => {
+      if (item.main === oldMain && item.sub === oldSub) {
+        return {
+          main,
+          sub,
+          type: newType
+        };
+      }
+      return item;
+    });
+
+    fixedExpenses = fixedExpenses.map(item => {
+      if (item.main === oldMain && item.sub === oldSub) {
+        return {
+          ...item,
+          main,
+          sub
+        };
+      }
+      return item;
+    });
+
+    if (selectedCategory && selectedCategory.main === oldMain && selectedCategory.sub === oldSub) {
+      selectedCategory = { main, sub, type: newType };
+      document.getElementById("selectedInfo").innerText = `선택: ${main} > ${sub}`;
+    }
+
+    editingCategoryKey = null;
+
+    editingCategoryKey = null;
+    showToast("카테고리 수정 완료");
+  } else {
+    const exists = categories.some(cat => cat.main === main && cat.sub === sub);
+    if (exists) {
+      alert("이미 있는 카테고리야");
+      return;
+    }
+
+    const newCategory = {
+      main,
+      sub,
+      type: newType
+    };
+
+    categories.push(newCategory);
+    selectedCategory = newCategory;
+    document.getElementById("selectedInfo").innerText = `선택: ${main} > ${sub}`;
+
+    showToast("카테고리 추가 완료");
+  }
+
+  document.getElementById("mainInput").value = "";
+  document.getElementById("subInput").value = "";
+
+  saveAll();
+  renderCategories();
+  renderRecentCategories();
+  populateFixedCategoryOptions();
+  updatePaymentVisibility();
+  render();
+}
+    
     function deleteCategory(main, sub) {
       const ok = confirm(`${main} > ${sub} 카테고리를 삭제할까?`);
       if (!ok) return;
@@ -1296,38 +1398,89 @@ function renderFixedExpenseList() {
     }
 
     function renderCategories() {
-      const area = document.getElementById("categoryArea");
-      area.innerHTML = "";
+  const area = document.getElementById("categoryArea");
+  area.innerHTML = "";
 
-      categories.forEach(cat => {
-        const row = document.createElement("div");
-        row.className = "category-row";
+  const grouped = {};
 
-        const btn = document.createElement("button");
-        btn.className = "category-btn";
-        btn.textContent = `${cat.main} > ${cat.sub}`;
+  categories.forEach(cat => {
+    if (!grouped[cat.main]) grouped[cat.main] = [];
+    grouped[cat.main].push(cat);
+  });
 
-        if (
-          selectedCategory &&
-          selectedCategory.main === cat.main &&
-          selectedCategory.sub === cat.sub
-        ) {
-          btn.classList.add("selected");
-        }
+  Object.keys(grouped).sort().forEach(main => {
+    const section = document.createElement("div");
+    section.className = "summary-box";
 
-        btn.onclick = () => selectCategory(cat);
+    const header = document.createElement("div");
+    header.className = "main-row";
+    header.style.display = "flex";
+    header.style.justifyContent = "space-between";
+    header.style.alignItems = "center";
+    header.style.cursor = "pointer";
+    header.onclick = () => toggleCategoryGroup(main);
 
-        const del = document.createElement("button");
-        del.className = "category-delete-btn";
-        del.textContent = "삭제";
-        del.onclick = () => deleteCategory(cat.main, cat.sub);
+    const isCollapsed = !!collapsedCategoryGroups[main];
 
-        row.appendChild(btn);
-        row.appendChild(del);
-        area.appendChild(row);
-      });
+    header.innerHTML = `
+      <span>${main}</span>
+      <span>${isCollapsed ? "▶" : "▼"}</span>
+    `;
+
+    section.appendChild(header);
+
+    if (!isCollapsed) {
+      grouped[main]
+        .sort((a, b) => a.sub.localeCompare(b.sub))
+        .forEach(cat => {
+          const row = document.createElement("div");
+          row.className = "category-row";
+          row.style.marginTop = "8px";
+
+          const btn = document.createElement("button");
+          btn.className = "category-btn";
+          btn.textContent = `${cat.sub}`;
+
+          if (
+            selectedCategory &&
+            selectedCategory.main === cat.main &&
+            selectedCategory.sub === cat.sub
+          ) {
+            btn.classList.add("selected");
+          }
+
+          btn.onclick = () => selectCategory(cat);
+
+          const actionWrap = document.createElement("div");
+          actionWrap.style.display = "flex";
+          actionWrap.style.gap = "6px";
+
+          const editBtn = document.createElement("button");
+          editBtn.className = "secondary";
+          editBtn.style.width = "auto";
+          editBtn.style.minWidth = "64px";
+          editBtn.style.minHeight = "48px";
+          editBtn.textContent = "수정";
+          editBtn.onclick = () => startEditCategory(cat.main, cat.sub);
+
+          const delBtn = document.createElement("button");
+          delBtn.className = "category-delete-btn";
+          delBtn.textContent = "삭제";
+          delBtn.onclick = () => deleteCategory(cat.main, cat.sub);
+
+          actionWrap.appendChild(editBtn);
+          actionWrap.appendChild(delBtn);
+
+          row.appendChild(btn);
+          row.appendChild(actionWrap);
+          section.appendChild(row);
+        });
     }
 
+    area.appendChild(section);
+  });
+}
+    
     function pushRecentCategory(cat) {
       recentCategories = recentCategories.filter(
         item => !(item.main === cat.main && item.sub === cat.sub)
