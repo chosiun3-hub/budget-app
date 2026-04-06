@@ -24,43 +24,6 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
 
-    .fixed-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-}
-
-.fold-btn {
-  width: auto;
-  min-height: 36px;
-  padding: 8px 12px;
-  font-size: 13px;
-  border-radius: 12px;
-  background: #eef2ff;
-  color: #374151;
-  border: 1px solid #dbeafe;
-  box-shadow: none;
-}
-
-.fixed-actions {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.fixed-actions button {
-  min-height: 40px;
-  padding: 10px 8px;
-  font-size: 14px;
-  border-radius: 12px;
-}
-
-.collapsed {
-  display: none !important;
-}
-    
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
       font-size: 15px;
@@ -121,9 +84,8 @@
     }
 
     .card h3 {
-      margin: 0 0 12px;
-      font-size: 18px;
-      letter-spacing: -0.02em;
+      margin: 0 0 10px;
+      font-size: 17px;
     }
 
     .muted {
@@ -187,7 +149,7 @@
 
     input, select, button {
       width: 100%;
-      min-height: 48px;
+      min-height: 46px;
       border-radius: 14px;
       border: 1px solid var(--line);
       background: #fff;
@@ -215,6 +177,17 @@
       color: #374151;
       box-shadow: none;
       border: 1px solid #e5e7eb;
+    }
+
+    .delete-btn {
+      width: auto;
+      min-width: 64px;
+      min-height: 40px;
+      padding: 10px 12px;
+      background: #fee2e2;
+      color: #b91c1c;
+      box-shadow: none;
+      font-size: 14px;
     }
 
     .budget-box {
@@ -256,61 +229,6 @@
       font-size: 13px;
       color: var(--sub);
       margin: 4px 2px 2px;
-    }
-
-    .category-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      max-height: 280px;
-      overflow: auto;
-      padding-right: 2px;
-    }
-
-    .category-row {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 8px;
-    }
-
-    .category-btn {
-      min-height: 48px;
-      background: #f8fafc;
-      color: var(--text);
-      border: 1px solid #e5e7eb;
-      box-shadow: none;
-      text-align: left;
-      padding: 12px 14px;
-      font-size: 15px;
-    }
-
-    .category-btn.selected {
-      background: var(--primary);
-      color: #fff;
-      border-color: transparent;
-      box-shadow: 0 8px 18px rgba(37,99,235,0.18);
-    }
-
-    .category-delete-btn {
-      width: auto;
-      min-width: 68px;
-      min-height: 48px;
-      padding: 12px 14px;
-      background: #fff7ed;
-      color: #9a3412;
-      border: 1px solid #fed7aa;
-      box-shadow: none;
-      font-size: 14px;
-    }
-
-    .selected-info {
-      margin-top: 8px;
-      padding: 12px 14px;
-      background: #f8fafc;
-      border-radius: 14px;
-      color: #374151;
-      font-size: 14px;
-      border: 1px solid #eef2f7;
     }
 
     .hint {
@@ -452,17 +370,6 @@
       color: #374151;
     }
 
-    .delete-btn {
-      width: auto;
-      min-width: 64px;
-      min-height: 40px;
-      padding: 10px 12px;
-      background: #fee2e2;
-      color: #b91c1c;
-      box-shadow: none;
-      font-size: 14px;
-    }
-
     .hidden {
       display: none !important;
     }
@@ -511,6 +418,115 @@
     .toast.show {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
+    }
+
+    .fixed-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .fold-btn {
+      width: auto;
+      min-height: 36px;
+      padding: 8px 12px;
+      font-size: 13px;
+      border-radius: 12px;
+      background: #eef2ff;
+      color: #374151;
+      border: 1px solid #dbeafe;
+      box-shadow: none;
+    }
+
+    .fixed-actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .fixed-actions button {
+      min-height: 38px;
+      padding: 8px 6px;
+      font-size: 12px;
+      border-radius: 10px;
+    }
+
+    .collapsed {
+      display: none !important;
+    }
+
+    .category-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: none;
+      overflow: visible;
+      padding-right: 0;
+    }
+
+    .category-group {
+      border: 1px solid #eef2f7;
+      border-radius: 14px;
+      padding: 12px;
+      background: #fcfcfd;
+    }
+
+    .category-group-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .subcategory-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .subcategory-btn {
+      min-height: 38px;
+      padding: 6px 6px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #f8fafc;
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: none;
+    }
+
+    .subcategory-btn.selected {
+      background: var(--primary);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .selected-info {
+      margin-top: 8px;
+      padding: 10px 12px;
+      font-size: 13px;
+      background: #f8fafc;
+      border-radius: 14px;
+      color: #374151;
+      border: 1px solid #eef2f7;
+    }
+
+    .item-action-buttons {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 430px) {
+      .subcategory-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
     }
 
     @media (max-width: 640px) {
@@ -602,11 +618,11 @@
     </div>
 
     <div class="card">
-  <div class="fixed-header">
-    <h3 style="margin:0;">월 고정비 관리</h3>
-    <button type="button" class="fold-btn" onclick="toggleFixedExpenseFold()" id="fixedFoldBtn">접기</button>
-  </div>
-      
+      <div class="fixed-header">
+        <h3 style="margin:0;">월 고정비 관리</h3>
+        <button type="button" class="fold-btn" onclick="toggleFixedExpenseFold()" id="fixedFoldBtn">접기</button>
+      </div>
+
       <div class="stack">
         <input type="text" id="fixedName" placeholder="고정비 이름 (예: 통신비, 관리비)" />
         <input type="number" id="fixedAmount" placeholder="고정비 금액" />
@@ -701,16 +717,14 @@
 
     <div class="card">
       <h3>카테고리 추가</h3>
-      
       <div class="stack">
-  <input id="mainInput" placeholder="대분류 (예: 생활비, 수입)" />
-  <input id="subInput" placeholder="중분류 (예: 식비, 급여)" />
-  <div class="row-buttons">
-    <button type="button" onclick="addCategory()">카테고리 저장</button>
-    <button type="button" class="secondary" onclick="cancelCategoryEdit()">수정 취소</button>
-  </div>
-</div>
-      
+        <input id="mainInput" placeholder="대분류 (예: 생활비, 수입)" />
+        <input id="subInput" placeholder="중분류 (예: 식비, 급여)" />
+        <div class="row-buttons">
+          <button type="button" onclick="addCategory()">카테고리 저장</button>
+          <button type="button" class="secondary" onclick="cancelCategoryEdit()">수정 취소</button>
+        </div>
+      </div>
       <div class="hint">대분류가 '수입'이면 수입 카테고리로 저장돼.</div>
     </div>
 
@@ -718,6 +732,11 @@
       <h3>카테고리 선택 / 삭제</h3>
       <div id="categoryArea" class="category-list"></div>
       <div id="selectedInfo" class="selected-info">선택 안됨</div>
+
+      <div class="row-buttons" style="margin-top:10px;">
+        <button type="button" class="secondary" onclick="editSelectedCategory()">선택 카테고리 수정</button>
+        <button type="button" class="secondary" onclick="deleteSelectedCategory()">선택 카테고리 삭제</button>
+      </div>
 
       <div class="stack" style="margin-top:12px;">
         <input type="number" id="amount" placeholder="금액 입력" />
@@ -751,7 +770,7 @@
   <div id="undoToast" class="toast"></div>
 
   <script>
-    const APP_VERSION = "v1.1.0";
+    const APP_VERSION = "v1.1.2";
 
     let transactions = JSON.parse(localStorage.getItem("money")) || [];
     let categories = JSON.parse(localStorage.getItem("categories")) || [
@@ -802,31 +821,6 @@
       window.location.href = url.toString();
     }
 
-    function toggleCategoryGroup(main) {
-  collapsedCategoryGroups[main] = !collapsedCategoryGroups[main];
-  localStorage.setItem("collapsedCategoryGroups", JSON.stringify(collapsedCategoryGroups));
-  renderCategories();
-}
-
-function startEditCategory(main, sub) {
-  const cat = categories.find(c => c.main === main && c.sub === sub);
-  if (!cat) return;
-
-  editingCategoryKey = `${main}|||${sub}`;
-
-  document.getElementById("mainInput").value = cat.main;
-  document.getElementById("subInput").value = cat.sub;
-
-  showToast("카테고리 수정 모드");
-}
-
-function cancelCategoryEdit() {
-  editingCategoryKey = null;
-  document.getElementById("mainInput").value = "";
-  document.getElementById("subInput").value = "";
-  showToast("카테고리 수정 취소");
-}
-    
     function forceRefresh() {
       forceUpdate();
     }
@@ -857,7 +851,6 @@ function cancelCategoryEdit() {
       if (!lastDeletedItem) return;
 
       transactions.splice(lastDeletedItem.index, 0, lastDeletedItem.item);
-
       saveAll();
       render();
 
@@ -890,6 +883,7 @@ function cancelCategoryEdit() {
         categories,
         budgets,
         recentCategories,
+        fixedExpenses,
         savedAt: new Date().toISOString(),
         version: APP_VERSION
       };
@@ -936,8 +930,12 @@ function cancelCategoryEdit() {
         categories = parsed.categories || [];
         budgets = parsed.budgets || {};
         recentCategories = parsed.recentCategories || [];
+        fixedExpenses = parsed.fixedExpenses || [];
+
         selectedCategory = null;
         editingTransactionId = null;
+        editingFixedExpenseId = null;
+        editingCategoryKey = null;
 
         saveAll();
         renderCategories();
@@ -952,6 +950,119 @@ function cancelCategoryEdit() {
       } catch {
         alert("자동백업 복원 실패");
       }
+    }
+
+    function triggerRestore() {
+      document.getElementById("restoreFile").click();
+    }
+
+    function restoreBackup(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+
+          if (!Array.isArray(parsed.transactions) || !Array.isArray(parsed.categories)) {
+            alert("올바른 백업 파일이 아니야");
+            return;
+          }
+
+          const ok = confirm("현재 데이터를 덮어쓰고 복구할까?");
+          if (!ok) return;
+
+          transactions = parsed.transactions || [];
+          categories = parsed.categories || [];
+          budgets = parsed.budgets || {};
+          recentCategories = parsed.recentCategories || [];
+          fixedExpenses = parsed.fixedExpenses || [];
+          selectedCategory = null;
+          editingTransactionId = null;
+          editingFixedExpenseId = null;
+          editingCategoryKey = null;
+
+          saveAll();
+          renderCategories();
+          renderRecentCategories();
+          populateFixedCategoryOptions();
+          renderFixedExpenseList();
+          updatePaymentVisibility();
+          updateTransactionButton();
+          render();
+
+          alert("복구 완료");
+        } catch {
+          alert("복구 실패: 파일 형식을 확인해줘");
+        } finally {
+          event.target.value = "";
+        }
+      };
+
+      reader.readAsText(file);
+    }
+
+    function downloadBackup() {
+      const backupData = {
+        transactions,
+        categories,
+        budgets,
+        recentCategories,
+        fixedExpenses,
+        exportedAt: new Date().toISOString(),
+        version: APP_VERSION
+      };
+
+      const blob = new Blob([JSON.stringify(backupData, null, 2)], {
+        type: "application/json"
+      });
+
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      const today = new Date().toISOString().slice(0, 10);
+
+      a.href = url;
+      a.download = `budget-backup-${today}.json`;
+      a.click();
+
+      URL.revokeObjectURL(url);
+    }
+
+    function downloadCSV() {
+      if (transactions.length === 0) {
+        alert("데이터가 없어");
+        return;
+      }
+
+      const header = ["날짜", "구분", "대분류", "중분류", "금액", "결제수단", "내용"];
+      const rows = transactions.map(t => [
+        t.date,
+        t.type === "income" ? "수입" : "지출",
+        t.main,
+        t.sub,
+        t.amount,
+        t.payment,
+        `"${(t.memo || "").replace(/"/g, '""')}"`
+      ]);
+
+      const csvContent = [header, ...rows].map(row => row.join(",")).join("\n");
+
+      const blob = new Blob(["\uFEFF" + csvContent], {
+        type: "text/csv;charset=utf-8;"
+      });
+
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      const today = new Date().toISOString().slice(0, 10);
+
+      a.href = url;
+      a.download = `가계부_${today}.csv`;
+      a.click();
+
+      URL.revokeObjectURL(url);
+      showToast("CSV 다운로드 완료");
     }
 
     function populateFixedCategoryOptions() {
@@ -1018,69 +1129,58 @@ function cancelCategoryEdit() {
       renderFixedExpenseList();
     }
 
-function renderFixedExpenseList() {
-  const area = document.getElementById("fixedExpenseList");
-  const foldBtn = document.getElementById("fixedFoldBtn");
-  if (!area) return;
+    function renderFixedExpenseList() {
+      const area = document.getElementById("fixedExpenseList");
+      const foldBtn = document.getElementById("fixedFoldBtn");
+      if (!area) return;
 
-  if (foldBtn) {
-    foldBtn.innerText = fixedExpenseCollapsed ? "펼치기" : "접기";
-  }
+      if (foldBtn) {
+        foldBtn.innerText = fixedExpenseCollapsed ? "펼치기" : "접기";
+      }
 
-  if (fixedExpenseCollapsed) {
-    area.innerHTML = "";
-    area.classList.add("collapsed");
-    return;
-  }
+      if (fixedExpenseCollapsed) {
+        area.innerHTML = "";
+        area.classList.add("collapsed");
+        return;
+      }
 
-  area.classList.remove("collapsed");
-  area.innerHTML = "";
+      area.classList.remove("collapsed");
+      area.innerHTML = "";
 
-  if (fixedExpenses.length === 0) {
-    area.innerHTML = '<div class="muted">등록된 고정비가 없어</div>';
-    return;
-  }
+      if (fixedExpenses.length === 0) {
+        area.innerHTML = '<div class="muted">등록된 고정비가 없어</div>';
+        return;
+      }
 
-  fixedExpenses.forEach(item => {
-    const div = document.createElement("div");
-    div.className = "item-box";
+      fixedExpenses.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "item-box";
 
-    div.innerHTML = `
-      <div class="item-top">
-        <div style="flex:1;">
-          <div class="item-title">${item.name}</div>
-          <div class="sub-row" style="padding:4px 0 0 0;">${item.main} > ${item.sub}</div>
-          <div class="item-amount expense">- ${formatWon(item.amount)}</div>
-        </div>
-      </div>
+        div.innerHTML = `
+          <div class="item-top">
+            <div style="flex:1;">
+              <div class="item-title">${item.name}</div>
+              <div class="sub-row" style="padding:4px 0 0 0;">${item.main} > ${item.sub}</div>
+              <div class="item-amount expense">- ${formatWon(item.amount)}</div>
+            </div>
+          </div>
 
-      <div class="item-meta">
-        <div class="pill">결제수단: ${item.payment}</div>
-        <div class="pill">${item.hidden ? "숨김" : "표시중"}</div>
-      </div>
+          <div class="item-meta">
+            <div class="pill">결제수단: ${item.payment}</div>
+            <div class="pill">${item.hidden ? "숨김" : "표시중"}</div>
+          </div>
 
-      <div class="fixed-actions">
-        <button type="button" class="secondary" onclick="editFixedExpense(${item.id})">수정</button>
-        <button type="button" class="secondary" onclick="toggleFixedExpenseHidden(${item.id})">
-          ${item.hidden ? "숨김 해제" : "숨기기"}
-        </button>
-        <button type="button" class="delete-btn" onclick="deleteFixedExpense(${item.id})">삭제</button>
-      </div>
-    `;
+          <div class="fixed-actions">
+            <button type="button" class="secondary" onclick="editFixedExpense(${item.id})">수정</button>
+            <button type="button" class="secondary" onclick="toggleFixedExpenseHidden(${item.id})">
+              ${item.hidden ? "숨김 해제" : "숨기기"}
+            </button>
+            <button type="button" class="delete-btn" onclick="deleteFixedExpense(${item.id})">삭제</button>
+          </div>
+        `;
 
-    area.appendChild(div);
-  });
-}
-    
-
-    function deleteFixedExpense(id) {
-      const ok = confirm("이 고정비를 삭제할까?");
-      if (!ok) return;
-
-      fixedExpenses = fixedExpenses.filter(item => item.id !== id);
-      saveAll();
-      renderFixedExpenseList();
-      showToast("고정비 삭제 완료");
+        area.appendChild(div);
+      });
     }
 
     function editFixedExpense(id) {
@@ -1096,6 +1196,16 @@ function renderFixedExpenseList() {
       showToast("고정비 수정 모드");
     }
 
+    function deleteFixedExpense(id) {
+      const ok = confirm("이 고정비를 삭제할까?");
+      if (!ok) return;
+
+      fixedExpenses = fixedExpenses.filter(item => item.id !== id);
+      saveAll();
+      renderFixedExpenseList();
+      showToast("고정비 삭제 완료");
+    }
+
     function toggleFixedExpenseHidden(id) {
       fixedExpenses = fixedExpenses.map(item =>
         item.id === id ? { ...item, hidden: !item.hidden } : item
@@ -1107,11 +1217,11 @@ function renderFixedExpenseList() {
     }
 
     function toggleFixedExpenseFold() {
-  fixedExpenseCollapsed = !fixedExpenseCollapsed;
-  localStorage.setItem("fixedExpenseCollapsed", JSON.stringify(fixedExpenseCollapsed));
-  renderFixedExpenseList();
-}
-    
+      fixedExpenseCollapsed = !fixedExpenseCollapsed;
+      localStorage.setItem("fixedExpenseCollapsed", JSON.stringify(fixedExpenseCollapsed));
+      renderFixedExpenseList();
+    }
+
     function applyFixedExpenses() {
       if (!currentMonthFilter) {
         alert("먼저 월을 선택해");
@@ -1163,213 +1273,128 @@ function renderFixedExpenseList() {
       }
     }
 
-    function getFilteredTransactions() {
-      let result = [...transactions];
-
-      if (currentMonthFilter) {
-        result = result.filter(t => t.date.startsWith(currentMonthFilter));
-      }
-
-      const keyword = document.getElementById("searchInput").value.trim().toLowerCase();
-      const typeFilter = document.getElementById("typeFilter").value;
-      const paymentFilter = document.getElementById("paymentFilter").value;
-      const sortFilter = document.getElementById("sortFilter").value;
-
-      if (keyword) {
-        result = result.filter(t =>
-          t.main.toLowerCase().includes(keyword) ||
-          t.sub.toLowerCase().includes(keyword) ||
-          (t.memo || "").toLowerCase().includes(keyword)
-        );
-      }
-
-      if (typeFilter) {
-        result = result.filter(t => t.type === typeFilter);
-      }
-
-      if (paymentFilter) {
-        result = result.filter(t => t.payment === paymentFilter);
-      }
-
-      if (sortFilter === "date_desc") {
-        result.sort((a, b) => b.date.localeCompare(a.date));
-      } else if (sortFilter === "date_asc") {
-        result.sort((a, b) => a.date.localeCompare(b.date));
-      } else if (sortFilter === "amount_desc") {
-        result.sort((a, b) => b.amount - a.amount);
-      } else if (sortFilter === "amount_asc") {
-        result.sort((a, b) => a.amount - b.amount);
-      }
-
-      return result;
+    function toggleCategoryGroup(main) {
+      collapsedCategoryGroups[main] = !collapsedCategoryGroups[main];
+      localStorage.setItem("collapsedCategoryGroups", JSON.stringify(collapsedCategoryGroups));
+      renderCategories();
     }
 
-    function resetFilters() {
-      document.getElementById("searchInput").value = "";
-      document.getElementById("typeFilter").value = "";
-      document.getElementById("paymentFilter").value = "";
-      document.getElementById("sortFilter").value = "date_desc";
-      render();
-      showToast("초기화 완료");
+    function startEditCategory(main, sub) {
+      const cat = categories.find(c => c.main === main && c.sub === sub);
+      if (!cat) return;
+
+      editingCategoryKey = `${main}|||${sub}`;
+      collapsedCategoryGroups[main] = false;
+      localStorage.setItem("collapsedCategoryGroups", JSON.stringify(collapsedCategoryGroups));
+
+      document.getElementById("mainInput").value = cat.main;
+      document.getElementById("subInput").value = cat.sub;
+
+      renderCategories();
+      showToast("카테고리 수정 모드");
     }
 
-    function setTodayToDateInputIfEmpty() {
-      const dateInput = document.getElementById("date");
-      if (!dateInput.value) {
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, "0");
-        const dd = String(today.getDate()).padStart(2, "0");
-        dateInput.value = `${yyyy}-${mm}-${dd}`;
-      }
-    }
-
-    function focusAmountInput() {
-      document.getElementById("amount").focus();
-    }
-
-    function setCurrentMonth() {
-      const d = new Date();
-      const m = String(d.getMonth() + 1).padStart(2, "0");
-      currentMonthFilter = `${d.getFullYear()}-${m}`;
-      document.getElementById("monthFilter").value = currentMonthFilter;
-      render();
-    }
-
-    function clearMonthFilter() {
-      currentMonthFilter = "";
-      document.getElementById("monthFilter").value = "";
-      render();
-    }
-
-    function setBudget() {
-      const budget = parseInt(document.getElementById("budgetInput").value, 10);
-
-      if (!currentMonthFilter) {
-        alert("먼저 월을 선택해");
-        return;
-      }
-
-      if (!budget || budget <= 0) {
-        alert("예산을 입력해");
-        return;
-      }
-
-      budgets[currentMonthFilter] = budget;
-      document.getElementById("budgetInput").value = "";
-      saveAll();
-      render();
-      showToast("예산 저장 완료");
+    function cancelCategoryEdit() {
+      editingCategoryKey = null;
+      document.getElementById("mainInput").value = "";
+      document.getElementById("subInput").value = "";
+      showToast("카테고리 수정 취소");
     }
 
     function addCategory() {
-  const main = document.getElementById("mainInput").value.trim();
-  const sub = document.getElementById("subInput").value.trim();
+      const main = document.getElementById("mainInput").value.trim();
+      const sub = document.getElementById("subInput").value.trim();
 
-  if (!main || !sub) {
-    alert("대분류와 중분류를 입력해");
-    return;
-  }
+      if (!main || !sub) {
+        alert("대분류와 중분류를 입력해");
+        return;
+      }
 
-  const newType = main === "수입" ? "income" : "expense";
+      const newType = main === "수입" ? "income" : "expense";
 
-  if (editingCategoryKey) {
-    const [oldMain, oldSub] = editingCategoryKey.split("|||");
+      if (editingCategoryKey) {
+        const [oldMain, oldSub] = editingCategoryKey.split("|||");
 
-    const duplicated = categories.some(cat =>
-      cat.main === main &&
-      cat.sub === sub &&
-      !(cat.main === oldMain && cat.sub === oldSub)
-    );
+        const duplicated = categories.some(cat =>
+          cat.main === main &&
+          cat.sub === sub &&
+          !(cat.main === oldMain && cat.sub === oldSub)
+        );
 
-    if (duplicated) {
-      alert("이미 있는 카테고리야");
-      return;
+        if (duplicated) {
+          alert("이미 있는 카테고리야");
+          return;
+        }
+
+        categories = categories.map(cat => {
+          if (cat.main === oldMain && cat.sub === oldSub) {
+            return { main, sub, type: newType };
+          }
+          return cat;
+        });
+
+        transactions = transactions.map(t => {
+          if (t.main === oldMain && t.sub === oldSub) {
+            return {
+              ...t,
+              main,
+              sub,
+              type: newType,
+              payment: newType === "income" ? "-" : t.payment
+            };
+          }
+          return t;
+        });
+
+        recentCategories = recentCategories.map(item => {
+          if (item.main === oldMain && item.sub === oldSub) {
+            return { main, sub, type: newType };
+          }
+          return item;
+        });
+
+        fixedExpenses = fixedExpenses.map(item => {
+          if (item.main === oldMain && item.sub === oldSub) {
+            return { ...item, main, sub };
+          }
+          return item;
+        });
+
+        if (selectedCategory && selectedCategory.main === oldMain && selectedCategory.sub === oldSub) {
+          selectedCategory = { main, sub, type: newType };
+          document.getElementById("selectedInfo").innerText = `선택: ${main} > ${sub}`;
+        }
+
+        editingCategoryKey = null;
+        showToast("카테고리 수정 완료");
+      } else {
+        const exists = categories.some(cat => cat.main === main && cat.sub === sub);
+        if (exists) {
+          alert("이미 있는 카테고리야");
+          return;
+        }
+
+        const newCategory = { main, sub, type: newType };
+        categories.push(newCategory);
+        selectedCategory = newCategory;
+        document.getElementById("selectedInfo").innerText = `선택: ${main} > ${sub}`;
+
+        showToast("카테고리 추가 완료");
+      }
+
+      document.getElementById("mainInput").value = "";
+      document.getElementById("subInput").value = "";
+
+      saveAll();
+      renderCategories();
+      renderRecentCategories();
+      populateFixedCategoryOptions();
+      updatePaymentVisibility();
+      render();
     }
 
-    categories = categories.map(cat => {
-      if (cat.main === oldMain && cat.sub === oldSub) {
-        return { main, sub, type: newType };
-      }
-      return cat;
-    });
-
-    transactions = transactions.map(t => {
-      if (t.main === oldMain && t.sub === oldSub) {
-        return {
-          ...t,
-          main,
-          sub,
-          type: newType
-        };
-      }
-      return t;
-    });
-
-    recentCategories = recentCategories.map(item => {
-      if (item.main === oldMain && item.sub === oldSub) {
-        return {
-          main,
-          sub,
-          type: newType
-        };
-      }
-      return item;
-    });
-
-    fixedExpenses = fixedExpenses.map(item => {
-      if (item.main === oldMain && item.sub === oldSub) {
-        return {
-          ...item,
-          main,
-          sub
-        };
-      }
-      return item;
-    });
-
-    if (selectedCategory && selectedCategory.main === oldMain && selectedCategory.sub === oldSub) {
-      selectedCategory = { main, sub, type: newType };
-      document.getElementById("selectedInfo").innerText = `선택: ${main} > ${sub}`;
-    }
-
-    editingCategoryKey = null;
-
-    editingCategoryKey = null;
-    showToast("카테고리 수정 완료");
-  } else {
-    const exists = categories.some(cat => cat.main === main && cat.sub === sub);
-    if (exists) {
-      alert("이미 있는 카테고리야");
-      return;
-    }
-
-    const newCategory = {
-      main,
-      sub,
-      type: newType
-    };
-
-    categories.push(newCategory);
-    selectedCategory = newCategory;
-    document.getElementById("selectedInfo").innerText = `선택: ${main} > ${sub}`;
-
-    showToast("카테고리 추가 완료");
-  }
-
-  document.getElementById("mainInput").value = "";
-  document.getElementById("subInput").value = "";
-
-  saveAll();
-  renderCategories();
-  renderRecentCategories();
-  populateFixedCategoryOptions();
-  updatePaymentVisibility();
-  render();
-}
-    
     function deleteCategory(main, sub) {
-      const ok = confirm(`${main} > ${sub} 카테고리를 삭제할까?`);
+      const ok = confirm(`${main} > ${sub} 카테고리를 삭제할까?\n기존 거래내역은 삭제되지 않아.`);
       if (!ok) return;
 
       categories = categories.filter(cat => !(cat.main === main && cat.sub === sub));
@@ -1389,6 +1414,22 @@ function renderFixedExpenseList() {
       showToast("카테고리 삭제 완료");
     }
 
+    function editSelectedCategory() {
+      if (!selectedCategory) {
+        alert("먼저 카테고리를 선택해");
+        return;
+      }
+      startEditCategory(selectedCategory.main, selectedCategory.sub);
+    }
+
+    function deleteSelectedCategory() {
+      if (!selectedCategory) {
+        alert("먼저 카테고리를 선택해");
+        return;
+      }
+      deleteCategory(selectedCategory.main, selectedCategory.sub);
+    }
+
     function selectCategory(cat) {
       selectedCategory = cat;
       document.getElementById("selectedInfo").innerText = `선택: ${cat.main} > ${cat.sub}`;
@@ -1398,89 +1439,62 @@ function renderFixedExpenseList() {
     }
 
     function renderCategories() {
-  const area = document.getElementById("categoryArea");
-  area.innerHTML = "";
+      const area = document.getElementById("categoryArea");
+      area.innerHTML = "";
 
-  const grouped = {};
+      const grouped = {};
 
-  categories.forEach(cat => {
-    if (!grouped[cat.main]) grouped[cat.main] = [];
-    grouped[cat.main].push(cat);
-  });
+      categories.forEach(cat => {
+        if (!grouped[cat.main]) grouped[cat.main] = [];
+        grouped[cat.main].push(cat);
+      });
 
-  Object.keys(grouped).sort().forEach(main => {
-    const section = document.createElement("div");
-    section.className = "summary-box";
+      Object.keys(grouped).sort().forEach(main => {
+        const groupBox = document.createElement("div");
+        groupBox.className = "category-group";
 
-    const header = document.createElement("div");
-    header.className = "main-row";
-    header.style.display = "flex";
-    header.style.justifyContent = "space-between";
-    header.style.alignItems = "center";
-    header.style.cursor = "pointer";
-    header.onclick = () => toggleCategoryGroup(main);
+        const isCollapsed = !!collapsedCategoryGroups[main];
 
-    const isCollapsed = !!collapsedCategoryGroups[main];
+        const header = document.createElement("div");
+        header.className = "category-group-header";
+        header.innerHTML = `
+          <span>${main}</span>
+          <span>${isCollapsed ? "▶" : "▼"}</span>
+        `;
+        header.onclick = () => toggleCategoryGroup(main);
 
-    header.innerHTML = `
-      <span>${main}</span>
-      <span>${isCollapsed ? "▶" : "▼"}</span>
-    `;
+        groupBox.appendChild(header);
 
-    section.appendChild(header);
+        if (!isCollapsed) {
+          const grid = document.createElement("div");
+          grid.className = "subcategory-grid";
 
-    if (!isCollapsed) {
-      grouped[main]
-        .sort((a, b) => a.sub.localeCompare(b.sub))
-        .forEach(cat => {
-          const row = document.createElement("div");
-          row.className = "category-row";
-          row.style.marginTop = "8px";
+          grouped[main]
+            .sort((a, b) => a.sub.localeCompare(b.sub))
+            .forEach(cat => {
+              const btn = document.createElement("button");
+              btn.className = "subcategory-btn";
+              btn.textContent = cat.sub;
 
-          const btn = document.createElement("button");
-          btn.className = "category-btn";
-          btn.textContent = `${cat.sub}`;
+              if (
+                selectedCategory &&
+                selectedCategory.main === cat.main &&
+                selectedCategory.sub === cat.sub
+              ) {
+                btn.classList.add("selected");
+              }
 
-          if (
-            selectedCategory &&
-            selectedCategory.main === cat.main &&
-            selectedCategory.sub === cat.sub
-          ) {
-            btn.classList.add("selected");
-          }
+              btn.onclick = () => selectCategory(cat);
+              grid.appendChild(btn);
+            });
 
-          btn.onclick = () => selectCategory(cat);
+          groupBox.appendChild(grid);
+        }
 
-          const actionWrap = document.createElement("div");
-          actionWrap.style.display = "flex";
-          actionWrap.style.gap = "6px";
-
-          const editBtn = document.createElement("button");
-          editBtn.className = "secondary";
-          editBtn.style.width = "auto";
-          editBtn.style.minWidth = "64px";
-          editBtn.style.minHeight = "48px";
-          editBtn.textContent = "수정";
-          editBtn.onclick = () => startEditCategory(cat.main, cat.sub);
-
-          const delBtn = document.createElement("button");
-          delBtn.className = "category-delete-btn";
-          delBtn.textContent = "삭제";
-          delBtn.onclick = () => deleteCategory(cat.main, cat.sub);
-
-          actionWrap.appendChild(editBtn);
-          actionWrap.appendChild(delBtn);
-
-          row.appendChild(btn);
-          row.appendChild(actionWrap);
-          section.appendChild(row);
-        });
+        area.appendChild(groupBox);
+      });
     }
 
-    area.appendChild(section);
-  });
-}
-    
     function pushRecentCategory(cat) {
       recentCategories = recentCategories.filter(
         item => !(item.main === cat.main && item.sub === cat.sub)
@@ -1533,6 +1547,21 @@ function renderFixedExpenseList() {
       document.getElementById("memo").value = "";
       document.getElementById("paymentMethod").value = "";
       setTodayToDateInputIfEmpty();
+    }
+
+    function setTodayToDateInputIfEmpty() {
+      const dateInput = document.getElementById("date");
+      if (!dateInput.value) {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, "0");
+        const dd = String(today.getDate()).padStart(2, "0");
+        dateInput.value = `${yyyy}-${mm}-${dd}`;
+      }
+    }
+
+    function focusAmountInput() {
+      document.getElementById("amount").focus();
     }
 
     function addTransaction() {
@@ -1629,6 +1658,90 @@ function renderFixedExpenseList() {
       undoTimer = setTimeout(() => {
         lastDeletedItem = null;
       }, 3000);
+    }
+
+    function getFilteredTransactions() {
+      let result = [...transactions];
+
+      if (currentMonthFilter) {
+        result = result.filter(t => t.date.startsWith(currentMonthFilter));
+      }
+
+      const keyword = document.getElementById("searchInput").value.trim().toLowerCase();
+      const typeFilter = document.getElementById("typeFilter").value;
+      const paymentFilter = document.getElementById("paymentFilter").value;
+      const sortFilter = document.getElementById("sortFilter").value;
+
+      if (keyword) {
+        result = result.filter(t =>
+          t.main.toLowerCase().includes(keyword) ||
+          t.sub.toLowerCase().includes(keyword) ||
+          (t.memo || "").toLowerCase().includes(keyword)
+        );
+      }
+
+      if (typeFilter) {
+        result = result.filter(t => t.type === typeFilter);
+      }
+
+      if (paymentFilter) {
+        result = result.filter(t => t.payment === paymentFilter);
+      }
+
+      if (sortFilter === "date_desc") {
+        result.sort((a, b) => b.date.localeCompare(a.date));
+      } else if (sortFilter === "date_asc") {
+        result.sort((a, b) => a.date.localeCompare(b.date));
+      } else if (sortFilter === "amount_desc") {
+        result.sort((a, b) => b.amount - a.amount);
+      } else if (sortFilter === "amount_asc") {
+        result.sort((a, b) => a.amount - b.amount);
+      }
+
+      return result;
+    }
+
+    function resetFilters() {
+      document.getElementById("searchInput").value = "";
+      document.getElementById("typeFilter").value = "";
+      document.getElementById("paymentFilter").value = "";
+      document.getElementById("sortFilter").value = "date_desc";
+      render();
+      showToast("초기화 완료");
+    }
+
+    function setCurrentMonth() {
+      const d = new Date();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      currentMonthFilter = `${d.getFullYear()}-${m}`;
+      document.getElementById("monthFilter").value = currentMonthFilter;
+      render();
+    }
+
+    function clearMonthFilter() {
+      currentMonthFilter = "";
+      document.getElementById("monthFilter").value = "";
+      render();
+    }
+
+    function setBudget() {
+      const budget = parseInt(document.getElementById("budgetInput").value, 10);
+
+      if (!currentMonthFilter) {
+        alert("먼저 월을 선택해");
+        return;
+      }
+
+      if (!budget || budget <= 0) {
+        alert("예산을 입력해");
+        return;
+      }
+
+      budgets[currentMonthFilter] = budget;
+      document.getElementById("budgetInput").value = "";
+      saveAll();
+      render();
+      showToast("예산 저장 완료");
     }
 
     function renderBudget(filteredTransactions) {
@@ -1902,7 +2015,8 @@ function renderFixedExpenseList() {
                 ${t.type === "income" ? "+" : "-"} ${formatWon(t.amount)}
               </div>
             </div>
-            <div style="display:flex; gap:6px;">
+
+            <div class="item-action-buttons">
               <button class="secondary" onclick="editTransaction(${t.id})">수정</button>
               <button class="delete-btn" onclick="deleteItem(${t.id})">삭제</button>
             </div>
@@ -1940,118 +2054,6 @@ function renderFixedExpenseList() {
       renderCategoryPieChart(filteredTransactions);
       renderDailyBarChart(filteredTransactions);
       renderList(filteredTransactions);
-    }
-
-    function downloadBackup() {
-      const backupData = {
-        transactions,
-        categories,
-        budgets,
-        recentCategories,
-        fixedExpenses,
-        exportedAt: new Date().toISOString(),
-        version: APP_VERSION
-      };
-
-      const blob = new Blob([JSON.stringify(backupData, null, 2)], {
-        type: "application/json"
-      });
-
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      const today = new Date().toISOString().slice(0, 10);
-
-      a.href = url;
-      a.download = `budget-backup-${today}.json`;
-      a.click();
-
-      URL.revokeObjectURL(url);
-    }
-
-    function downloadCSV() {
-      if (transactions.length === 0) {
-        alert("데이터가 없어");
-        return;
-      }
-
-      const header = ["날짜", "구분", "대분류", "중분류", "금액", "결제수단", "내용"];
-      const rows = transactions.map(t => [
-        t.date,
-        t.type === "income" ? "수입" : "지출",
-        t.main,
-        t.sub,
-        t.amount,
-        t.payment,
-        `"${(t.memo || "").replace(/"/g, '""')}"`
-      ]);
-
-      const csvContent = [header, ...rows].map(row => row.join(",")).join("\n");
-
-      const blob = new Blob(["\uFEFF" + csvContent], {
-        type: "text/csv;charset=utf-8;"
-      });
-
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      const today = new Date().toISOString().slice(0, 10);
-
-      a.href = url;
-      a.download = `가계부_${today}.csv`;
-      a.click();
-
-      URL.revokeObjectURL(url);
-      showToast("CSV 다운로드 완료");
-    }
-
-    function triggerRestore() {
-      document.getElementById("restoreFile").click();
-    }
-
-    function restoreBackup(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-
-      reader.onload = function(e) {
-        try {
-          const parsed = JSON.parse(e.target.result);
-
-          if (!parsed.transactions || !parsed.categories || !parsed.budgets) {
-            alert("올바른 백업 파일이 아니야");
-            return;
-          }
-
-          const ok = confirm("현재 데이터를 덮어쓰고 복구할까?");
-          if (!ok) return;
-
-          transactions = parsed.transactions || [];
-          categories = parsed.categories || [];
-          budgets = parsed.budgets || {};
-          recentCategories = parsed.recentCategories || [];
-          fixedExpenses = parsed.fixedExpenses || [];
-          selectedCategory = null;
-          editingTransactionId = null;
-          editingFixedExpenseId = null;
-
-          saveAll();
-          renderCategories();
-          renderRecentCategories();
-          populateFixedCategoryOptions();
-          renderFixedExpenseList();
-          updatePaymentVisibility();
-          updateTransactionButton();
-          render();
-
-          alert("복구 완료");
-        } catch {
-          alert("복구 실패: 파일 형식을 확인해줘");
-        } finally {
-          event.target.value = "";
-        }
-      };
-
-      reader.readAsText(file);
     }
 
     document.getElementById("monthFilter").addEventListener("change", function(e) {
