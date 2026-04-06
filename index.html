@@ -135,6 +135,73 @@
       gap: 10px;
     }
 
+    .dashboard-sticky {
+  position: sticky;
+  top: calc(env(safe-area-inset-top) + 6px);
+  z-index: 50;
+  backdrop-filter: blur(10px);
+}
+
+.dashboard-sticky .summary-grid {
+  gap: 8px;
+}
+
+.dashboard-sticky .summary-item {
+  padding: 12px 10px;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(15,23,42,0.06);
+}
+
+.dashboard-sticky .summary-label {
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+
+.dashboard-sticky .summary-value {
+  font-size: 18px;
+}
+
+.item-action-buttons {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.copy-btn {
+  width: auto;
+  min-width: 64px;
+  min-height: 40px;
+  padding: 10px 12px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+  box-shadow: none;
+  font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  .dashboard-sticky {
+    top: calc(env(safe-area-inset-top) + 4px);
+  }
+
+  .dashboard-sticky .summary-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .dashboard-sticky .summary-item {
+    padding: 10px 8px;
+  }
+
+  .dashboard-sticky .summary-value {
+    font-size: 16px;
+  }
+
+  .dashboard-sticky .summary-label {
+    font-size: 10px;
+  }
+}
+
     .quad-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -648,22 +715,23 @@
       <div id="fixedExpenseList" class="item-list" style="margin-top:12px;"></div>
     </div>
 
-    <div class="card">
-      <div class="summary-grid">
-        <div class="summary-item">
-          <div class="summary-label">수입</div>
-          <div class="summary-value income" id="income">0원</div>
-        </div>
-        <div class="summary-item">
-          <div class="summary-label">지출</div>
-          <div class="summary-value expense" id="expense">0원</div>
-        </div>
-        <div class="summary-item">
-          <div class="summary-label">잔액</div>
-          <div class="summary-value" id="balance">0원</div>
-        </div>
-      </div>
+    <div class="card dashboard-sticky">
+  <div class="summary-grid">
+    <div class="summary-item">
+      <div class="summary-label">수입</div>
+      <div class="summary-value income" id="income">0원</div>
     </div>
+    <div class="summary-item">
+      <div class="summary-label">지출</div>
+      <div class="summary-value expense" id="expense">0원</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-label">잔액</div>
+      <div class="summary-value" id="balance">0원</div>
+    </div>
+  </div>
+</div>
+    
 
     <div class="card">
       <h3>이번 달 통계</h3>
@@ -770,7 +838,7 @@
   <div id="undoToast" class="toast"></div>
 
   <script>
-    const APP_VERSION = "v1.1.2";
+    const APP_VERSION = "v1.1.3";
 
     let transactions = JSON.parse(localStorage.getItem("money")) || [];
     let categories = JSON.parse(localStorage.getItem("categories")) || [
@@ -1640,6 +1708,30 @@
       showToast("수정 모드");
     }
 
+    function copyTransaction(id) {
+  const t = transactions.find(item => item.id === id);
+  if (!t) return;
+
+  const cat = categories.find(c => c.main === t.main && c.sub === t.sub);
+  if (cat) {
+    selectedCategory = cat;
+    document.getElementById("selectedInfo").innerText = `선택: ${cat.main} > ${cat.sub}`;
+    renderCategories();
+    updatePaymentVisibility();
+  }
+
+  document.getElementById("amount").value = t.amount;
+  document.getElementById("memo").value = t.memo || "";
+  document.getElementById("paymentMethod").value = t.payment === "-" ? "" : t.payment;
+
+  setTodayToDateInputIfEmpty();
+  editingTransactionId = null;
+  updateTransactionButton();
+
+  showToast("거래 복사 완료");
+  focusAmountInput();
+}
+
     function deleteItem(id) {
       const index = transactions.findIndex(t => t.id === id);
       if (index === -1) return;
@@ -2006,27 +2098,30 @@
         const div = document.createElement("div");
         div.className = "item-box";
 
-        div.innerHTML = `
-          <div class="item-top">
-            <div style="flex:1;">
-              <div class="item-title">${t.main} > ${t.sub}</div>
-              ${t.memo ? `<div class="sub-row" style="padding:4px 0 0 0;">${t.memo}</div>` : ""}
-              <div class="item-amount ${t.type === "income" ? "income" : "expense"}">
-                ${t.type === "income" ? "+" : "-"} ${formatWon(t.amount)}
-              </div>
-            </div>
 
-            <div class="item-action-buttons">
-              <button class="secondary" onclick="editTransaction(${t.id})">수정</button>
-              <button class="delete-btn" onclick="deleteItem(${t.id})">삭제</button>
-            </div>
-          </div>
-          <div class="item-meta">
-            <div class="pill">${t.date}</div>
-            <div class="pill">결제수단: ${t.payment}</div>
-            <div class="pill">${t.type === "income" ? "수입" : "지출"}</div>
-          </div>
-        `;
+        div.innerHTML = `
+  <div class="item-top">
+    <div style="flex:1;">
+      <div class="item-title">${t.main} > ${t.sub}</div>
+      ${t.memo ? `<div class="sub-row" style="padding:4px 0 0 0;">${t.memo}</div>` : ""}
+      <div class="item-amount ${t.type === "income" ? "income" : "expense"}">
+        ${t.type === "income" ? "+" : "-"} ${formatWon(t.amount)}
+      </div>
+    </div>
+
+    <div class="item-action-buttons">
+      <button class="copy-btn" onclick="copyTransaction(${t.id})">복사</button>
+      <button class="secondary" onclick="editTransaction(${t.id})">수정</button>
+      <button class="delete-btn" onclick="deleteItem(${t.id})">삭제</button>
+    </div>
+  </div>
+
+  <div class="item-meta">
+    <div class="pill">${t.date}</div>
+    <div class="pill">결제수단: ${t.payment}</div>
+    <div class="pill">${t.type === "income" ? "수입" : "지출"}</div>
+  </div>
+`;
 
         area.appendChild(div);
       });
