@@ -24,6 +24,43 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
 
+    .fixed-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.fold-btn {
+  width: auto;
+  min-height: 36px;
+  padding: 8px 12px;
+  font-size: 13px;
+  border-radius: 12px;
+  background: #eef2ff;
+  color: #374151;
+  border: 1px solid #dbeafe;
+  box-shadow: none;
+}
+
+.fixed-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.fixed-actions button {
+  min-height: 40px;
+  padding: 10px 8px;
+  font-size: 14px;
+  border-radius: 12px;
+}
+
+.collapsed {
+  display: none !important;
+}
+    
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
       font-size: 15px;
@@ -565,7 +602,11 @@
     </div>
 
     <div class="card">
-      <h3>월 고정비 관리</h3>
+  <div class="fixed-header">
+    <h3 style="margin:0;">월 고정비 관리</h3>
+    <button type="button" class="fold-btn" onclick="toggleFixedExpenseFold()" id="fixedFoldBtn">접기</button>
+  </div>
+      
       <div class="stack">
         <input type="text" id="fixedName" placeholder="고정비 이름 (예: 통신비, 관리비)" />
         <input type="number" id="fixedAmount" placeholder="고정비 금액" />
@@ -722,6 +763,7 @@
 
     let editingFixedExpenseId = null;
     let editingTransactionId = null;
+    let fixedExpenseCollapsed = JSON.parse(localStorage.getItem("fixedExpenseCollapsed")) || false;
     let selectedCategory = null;
     let currentMonthFilter = "";
     let categoryPieChart = null;
@@ -944,41 +986,60 @@
       renderFixedExpenseList();
     }
 
-    function renderFixedExpenseList() {
-      const area = document.getElementById("fixedExpenseList");
-      area.innerHTML = "";
+function renderFixedExpenseList() {
+  const area = document.getElementById("fixedExpenseList");
+  const foldBtn = document.getElementById("fixedFoldBtn");
+  if (!area) return;
 
-      if (fixedExpenses.length === 0) {
-        area.innerHTML = '<div class="muted">등록된 고정비가 없어</div>';
-        return;
-      }
+  if (foldBtn) {
+    foldBtn.innerText = fixedExpenseCollapsed ? "펼치기" : "접기";
+  }
 
-      fixedExpenses.forEach(item => {
-        const div = document.createElement("div");
-        div.className = "item-box";
+  if (fixedExpenseCollapsed) {
+    area.innerHTML = "";
+    area.classList.add("collapsed");
+    return;
+  }
 
-        div.innerHTML = `
-          <div class="item-top">
-            <div style="flex:1;">
-              <div class="item-title">${item.name}</div>
-              <div class="sub-row" style="padding:4px 0 0 0;">${item.main} > ${item.sub}</div>
-              <div class="item-amount expense">- ${formatWon(item.amount)}</div>
-            </div>
-          </div>
-          <div class="item-meta">
-            <div class="pill">결제수단: ${item.payment}</div>
-            <div class="pill">${item.hidden ? "숨김" : "표시중"}</div>
-          </div>
-          <div class="row-buttons" style="margin-top:10px;">
-            <button type="button" class="secondary" onclick="editFixedExpense(${item.id})">수정</button>
-            <button type="button" class="secondary" onclick="toggleFixedExpenseHidden(${item.id})">${item.hidden ? "숨김 해제" : "숨기기"}</button>
-            <button type="button" class="delete-btn" onclick="deleteFixedExpense(${item.id})">삭제</button>
-          </div>
-        `;
+  area.classList.remove("collapsed");
+  area.innerHTML = "";
 
-        area.appendChild(div);
-      });
-    }
+  if (fixedExpenses.length === 0) {
+    area.innerHTML = '<div class="muted">등록된 고정비가 없어</div>';
+    return;
+  }
+
+  fixedExpenses.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "item-box";
+
+    div.innerHTML = `
+      <div class="item-top">
+        <div style="flex:1;">
+          <div class="item-title">${item.name}</div>
+          <div class="sub-row" style="padding:4px 0 0 0;">${item.main} > ${item.sub}</div>
+          <div class="item-amount expense">- ${formatWon(item.amount)}</div>
+        </div>
+      </div>
+
+      <div class="item-meta">
+        <div class="pill">결제수단: ${item.payment}</div>
+        <div class="pill">${item.hidden ? "숨김" : "표시중"}</div>
+      </div>
+
+      <div class="fixed-actions">
+        <button type="button" class="secondary" onclick="editFixedExpense(${item.id})">수정</button>
+        <button type="button" class="secondary" onclick="toggleFixedExpenseHidden(${item.id})">
+          ${item.hidden ? "숨김 해제" : "숨기기"}
+        </button>
+        <button type="button" class="delete-btn" onclick="deleteFixedExpense(${item.id})">삭제</button>
+      </div>
+    `;
+
+    area.appendChild(div);
+  });
+}
+    
 
     function deleteFixedExpense(id) {
       const ok = confirm("이 고정비를 삭제할까?");
@@ -1013,6 +1074,12 @@
       showToast("고정비 상태 변경");
     }
 
+    function toggleFixedExpenseFold() {
+  fixedExpenseCollapsed = !fixedExpenseCollapsed;
+  localStorage.setItem("fixedExpenseCollapsed", JSON.stringify(fixedExpenseCollapsed));
+  renderFixedExpenseList();
+}
+    
     function applyFixedExpenses() {
       if (!currentMonthFilter) {
         alert("먼저 월을 선택해");
