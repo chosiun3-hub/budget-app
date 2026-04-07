@@ -728,23 +728,6 @@
 </div>
 
     <div class="card">
-  <h3>결제수단 관리</h3>
-
-  <div class="stack">
-    <input type="text" id="paymentMethodInput" placeholder="결제수단 이름 입력" />
-  </div>
-
-  <div class="row-buttons" style="margin-top:10px;">
-    <button type="button" onclick="savePaymentMethod()">결제수단 저장</button>
-    <button type="button" class="secondary" onclick="cancelPaymentMethodEdit()">수정 취소</button>
-  </div>
-
-  <div id="selectedPaymentInfo" class="selected-info">선택 안됨</div>
-
-  <div id="paymentMethodManageList" class="item-list" style="margin-top:12px;"></div>
-</div>
-
-    <div class="card">
       <h3>이번 달 통계</h3>
       <div class="stats-grid">
         <div class="stats-box">
@@ -809,8 +792,7 @@
   <div class="hint">대분류가 '수입'이면 수입 카테고리로 저장돼.</div>
 </div>
 
-    
-  <div class="card">
+    <div class="card">
   <h3>카테고리 선택 / 삭제</h3>
   <div id="categoryArea" class="category-list"></div>
   <div id="selectedInfo" class="selected-info">선택 안됨</div>
@@ -824,6 +806,22 @@
     <input type="number" id="amount" placeholder="금액 입력" />
     <input type="text" id="memo" placeholder="내용 입력 (예: 점심, 커피, 월급)" />
     <input type="date" id="date" />
+
+    <div class="summary-box" style="margin-top:6px;">
+      <h3 style="margin-bottom:12px;">결제수단 관리</h3>
+
+      <div class="stack">
+        <input type="text" id="paymentMethodInput" placeholder="결제수단 이름 입력" />
+
+        <div class="row-buttons">
+          <button type="button" onclick="savePaymentMethod()">결제수단 저장</button>
+          <button type="button" class="secondary" onclick="cancelPaymentMethodEdit()">수정 취소</button>
+        </div>
+      </div>
+
+      <div id="selectedPaymentInfo" class="selected-info" style="margin-top:12px;">선택 안됨</div>
+      <div id="paymentMethodManageList" class="item-list" style="margin-top:12px;"></div>
+    </div>
 
     <div id="paymentWrap">
       <div class="section-label">결제수단</div>
@@ -840,6 +838,8 @@
   </div>
 </div>
 
+    
+
 <div class="card">
   <h3>거래 내역</h3>
   <div id="list" class="item-list"></div>
@@ -852,7 +852,7 @@
   <div id="undoToast" class="toast"></div>
 
   <script>
-    const APP_VERSION = "v1.1.5";
+    const APP_VERSION = "v1.1.6";
     const UNASSIGNED_PAYMENT = "미분류";
   
 
@@ -1265,6 +1265,7 @@
       }
 
       fixedExpenses.forEach(item => {
+        const safeMethod = method.replace(/'/g, "\\'");
         const div = document.createElement("div");
         div.className = "item-box";
 
@@ -1503,7 +1504,9 @@
       renderRecentCategories();
       populateFixedCategoryOptions();
       updatePaymentVisibility();
+      updateTransactionButton();
       render();
+      
     }
 
     function deleteCategory(main, sub) {
@@ -1662,18 +1665,19 @@
     div.className = "item-box";
 
     div.innerHTML = `
-      <div class="item-top">
-        <div style="flex:1;">
-          <div class="item-title">${method}</div>
-        </div>
+  <div class="item-top">
+    <div style="flex:1;">
+      <div class="item-title">${method}</div>
+    </div>
 
-        <div class="item-action-buttons">
-          <button type="button" class="copy-btn" onclick="selectPaymentMethod('${method}')">선택</button>
-          <button type="button" class="secondary" onclick="editPaymentMethod('${method}')">수정</button>
-          <button type="button" class="delete-btn" onclick="deletePaymentMethod('${method}')">삭제</button>
-        </div>
-      </div>
-    `;
+    <div class="item-action-buttons">
+      <button type="button" class="copy-btn" onclick="selectPaymentMethod('${safeMethod}')">선택</button>
+      <button type="button" class="secondary" onclick="editPaymentMethod('${safeMethod}')">수정</button>
+      <button type="button" class="delete-btn" onclick="deletePaymentMethod('${safeMethod}')">삭제</button>
+    </div>
+  </div>
+`;
+    
 
     area.appendChild(div);
   });
