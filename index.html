@@ -161,14 +161,11 @@
   font-size: 18px;
 }
 
-.item-action-buttons {
-  display: flex;
-  gap: 6px;
-  flex-shrink: 0;
-  flex-wrap: wrap;
+  .item-action-buttons button {
+  width: auto;
 }
-
-.copy-btn {
+    
+    .copy-btn {
   width: auto;
   min-width: 64px;
   min-height: 40px;
@@ -584,12 +581,14 @@
       border: 1px solid #eef2f7;
     }
 
-    .item-action-buttons {
-      display: flex;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-
+.item-action-buttons {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+    
     @media (max-width: 430px) {
       .subcategory-grid {
         grid-template-columns: repeat(3, 1fr);
@@ -604,6 +603,11 @@
       .stats-grid { grid-template-columns: 1fr; }
       .chart-wrap { height: 240px; }
       .card { padding: 14px; }
+
+      .dashboard-sticky .summary-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+}
+      
     }
   </style>
 </head>
@@ -784,53 +788,60 @@
     </div>
 
     <div class="card">
-      <h3>카테고리 추가</h3>
-      <div class="stack">
-        <input id="mainInput" placeholder="대분류 (예: 생활비, 수입)" />
-        <input id="subInput" placeholder="중분류 (예: 식비, 급여)" />
-        <div class="row-buttons">
-          <button type="button" onclick="addCategory()">카테고리 저장</button>
-          <button type="button" class="secondary" onclick="cancelCategoryEdit()">수정 취소</button>
-        </div>
-      </div>
-      <div class="hint">대분류가 '수입'이면 수입 카테고리로 저장돼.</div>
+  <h3>카테고리 추가</h3>
+  <div class="stack">
+    <input id="mainInput" placeholder="대분류 (예: 생활비, 수입)" />
+    <input id="subInput" placeholder="중분류 (예: 식비, 급여)" />
+
+    <div class="row-buttons">
+      <button type="button" onclick="addCategory()">카테고리 저장</button>
+      <button type="button" class="secondary" onclick="cancelCategoryEdit()">수정 취소</button>
+    </div>
+  </div>
+
+  <div class="hint">대분류가 '수입'이면 수입 카테고리로 저장돼.</div>
+</div>
+
+    
+  <div class="card">
+  <h3>카테고리 선택 / 삭제</h3>
+  <div id="categoryArea" class="category-list"></div>
+  <div id="selectedInfo" class="selected-info">선택 안됨</div>
+
+  <div class="row-buttons" style="margin-top:10px;">
+    <button type="button" class="secondary" onclick="editSelectedCategory()">선택 카테고리 수정</button>
+    <button type="button" class="secondary" onclick="deleteSelectedCategory()">선택 카테고리 삭제</button>
+  </div>
+
+  <div class="stack" style="margin-top:12px;">
+    <input type="number" id="amount" placeholder="금액 입력" />
+    <input type="text" id="memo" placeholder="내용 입력 (예: 점심, 커피, 월급)" />
+    <input type="date" id="date" />
+
+    <div id="paymentWrap">
+      <div class="section-label">결제수단</div>
+      <select id="paymentMethod">
+        <option value="">결제수단 선택</option>
+        <option value="현금">현금</option>
+        <option value="신한코웨이">신한코웨이</option>
+        <option value="쿠팡">쿠팡</option>
+        <option value="하나생활비">하나생활비</option>
+      </select>
+      <div class="hint">수입은 결제수단을 선택하지 않아도 돼.</div>
     </div>
 
-    <div class="card">
-      <h3>카테고리 선택 / 삭제</h3>
-      <div id="categoryArea" class="category-list"></div>
-      <div id="selectedInfo" class="selected-info">선택 안됨</div>
-
-      <div class="row-buttons" style="margin-top:10px;">
-        <button type="button" class="secondary" onclick="editSelectedCategory()">선택 카테고리 수정</button>
-        <button type="button" class="secondary" onclick="deleteSelectedCategory()">선택 카테고리 삭제</button>
-      </div>
-
-      <div class="stack" style="margin-top:12px;">
-        <input type="number" id="amount" placeholder="금액 입력" />
-        <input type="text" id="memo" placeholder="내용 입력 (예: 점심, 커피, 월급)" />
-        <input type="date" id="date" />
-
-        <div id="paymentWrap">
-          <div class="section-label">결제수단</div>
-          <select id="paymentMethod">
-            <option value="">결제수단 선택</option>
-            <option value="현금">현금</option>
-            <option value="신한코웨이">신한코웨이</option>
-            <option value="쿠팡">쿠팡</option>
-            <option value="하나생활비">하나생활비</option>
-          </select>
-          <div class="hint">수입은 결제수단을 선택하지 않아도 돼.</div>
-        </div>
-
-        <button type="button" id="addTransactionBtn" onclick="addTransaction()">거래 추가</button>
-      </div>
+    <div class="row-buttons">
+      <button type="button" id="addTransactionBtn" onclick="addTransaction()">거래 추가</button>
+      <button type="button" class="secondary" onclick="cancelTransactionEdit()">거래 수정 취소</button>
     </div>
+  </div>
+</div>
 
-    <div class="card">
-      <h3>거래 내역</h3>
-      <div id="list" class="item-list"></div>
-    </div>
+<div class="card">
+  <h3>거래 내역</h3>
+  <div id="list" class="item-list"></div>
+
+   </div>
   </div>
 
   <input type="file" id="restoreFile" accept=".json" class="hidden" />
@@ -838,7 +849,7 @@
   <div id="undoToast" class="toast"></div>
 
   <script>
-    const APP_VERSION = "v1.1.3";
+    const APP_VERSION = "v1.1.4";
 
     let transactions = JSON.parse(localStorage.getItem("money")) || [];
     let categories = JSON.parse(localStorage.getItem("categories")) || [
@@ -1617,6 +1628,13 @@
       setTodayToDateInputIfEmpty();
     }
 
+    function cancelTransactionEdit() {
+  editingTransactionId = null;
+  updateTransactionButton();
+  clearTransactionForm();
+  showToast("거래 수정 취소");
+}
+    
     function setTodayToDateInputIfEmpty() {
       const dateInput = document.getElementById("date");
       if (!dateInput.value) {
@@ -1708,6 +1726,7 @@
       showToast("수정 모드");
     }
 
+
     function copyTransaction(id) {
   const t = transactions.find(item => item.id === id);
   if (!t) return;
@@ -1724,7 +1743,7 @@
   document.getElementById("memo").value = t.memo || "";
   document.getElementById("paymentMethod").value = t.payment === "-" ? "" : t.payment;
 
-  setTodayToDateInputIfEmpty();
+  setTodayToDateInput();
   editingTransactionId = null;
   updateTransactionButton();
 
@@ -1732,6 +1751,17 @@
   focusAmountInput();
 }
 
+    
+
+    function setTodayToDateInput() {
+  const dateInput = document.getElementById("date");
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const dd = String(today.getDate()).padStart(2, "0");
+  dateInput.value = `${yyyy}-${mm}-${dd}`;
+}
+    
     function deleteItem(id) {
       const index = transactions.findIndex(t => t.id === id);
       if (index === -1) return;
@@ -1794,14 +1824,30 @@
     }
 
     function resetFilters() {
+      clearTimeout(searchTimer);
       document.getElementById("searchInput").value = "";
       document.getElementById("typeFilter").value = "";
       document.getElementById("paymentFilter").value = "";
       document.getElementById("sortFilter").value = "date_desc";
       render();
       showToast("초기화 완료");
-    }
+}
+    
+    
+    let searchTimer = null;
 
+    function bindSearchInput() {
+      const searchInput = document.getElementById("searchInput");
+      if (!searchInput) return;
+
+      searchInput.addEventListener("input", function () {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => {
+          render();
+        }, 250);
+      });
+    }
+    
     function setCurrentMonth() {
       const d = new Date();
       const m = String(d.getMonth() + 1).padStart(2, "0");
@@ -2128,41 +2174,47 @@
     }
 
     function render() {
-      const filteredTransactions = getFilteredTransactions();
+  const filteredTransactions = getFilteredTransactions();
 
-      let income = 0;
-      let expense = 0;
+  let income = 0;
+  let expense = 0;
 
-      filteredTransactions.forEach(t => {
-        if (t.type === "income") income += t.amount;
-        else expense += t.amount;
-      });
+  filteredTransactions.forEach(t => {
+    if (t.type === "income") income += t.amount;
+    else expense += t.amount;
+  });
 
-      document.getElementById("income").innerText = formatWon(income);
-      document.getElementById("expense").innerText = formatWon(expense);
-      document.getElementById("balance").innerText = formatWon(income - expense);
+  document.getElementById("income").innerText = formatWon(income);
+  document.getElementById("expense").innerText = formatWon(expense);
+  document.getElementById("balance").innerText = formatWon(income - expense);
 
-      renderBudget(filteredTransactions);
-      renderStats(filteredTransactions);
-      renderSummary(filteredTransactions);
-      renderPaymentSummary(filteredTransactions);
-      renderCategoryPieChart(filteredTransactions);
-      renderDailyBarChart(filteredTransactions);
-      renderList(filteredTransactions);
-    }
+  renderBudget(filteredTransactions);
+  renderStats(filteredTransactions);
+  renderSummary(filteredTransactions);
+  renderPaymentSummary(filteredTransactions);
+  renderList(filteredTransactions);
+
+  requestAnimationFrame(() => {
+    renderCategoryPieChart(filteredTransactions);
+    renderDailyBarChart(filteredTransactions);
+  });
+}
+    
 
     document.getElementById("monthFilter").addEventListener("change", function(e) {
       currentMonthFilter = e.target.value;
       render();
     });
 
-    document.getElementById("searchInput").addEventListener("input", render);
+
     document.getElementById("typeFilter").addEventListener("change", render);
     document.getElementById("paymentFilter").addEventListener("change", render);
     document.getElementById("sortFilter").addEventListener("change", render);
     document.getElementById("restoreFile").addEventListener("change", restoreBackup);
 
+    
     initVersion();
+    bindSearchInput();
     renderCategories();
     renderRecentCategories();
     setCurrentMonth();
@@ -2175,6 +2227,8 @@
     renderFixedExpenseList();
     render();
     checkUpdate();
+    
+
   </script>
 </body>
 </html>
