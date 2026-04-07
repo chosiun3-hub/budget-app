@@ -588,6 +588,37 @@
   flex-wrap: wrap;
   justify-content: flex-end;
 }
+
+    .payment-method-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.payment-select-btn {
+  width: auto;
+  min-width: 72px;
+  min-height: 40px;
+  padding: 10px 12px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+  box-shadow: none;
+  font-size: 14px;
+}
+
+.payment-select-btn.selected {
+  background: var(--primary);
+  color: #fff;
+  border-color: transparent;
+}
+
+@media (max-width: 640px) {
+  .payment-method-row {
+    grid-template-columns: 1fr;
+  }
+}
     
     @media (max-width: 430px) {
       .subcategory-grid {
@@ -807,14 +838,13 @@
     <input type="text" id="memo" placeholder="내용 입력 (예: 점심, 커피, 월급)" />
     <input type="date" id="date" />
 
-
-    <div id="paymentWrap">
-      <div class="section-label">결제수단</div>
-      <select id="paymentMethod">
-        <option value="">결제수단 선택</option>
-      </select>
-      <div class="hint">수입은 결제수단을 선택하지 않아도 돼.</div>
-    </div>
+<div id="paymentWrap">
+  <div class="section-label">결제수단</div>
+  <div id="selectedPaymentInfo" class="selected-info">선택 안됨</div>
+  <div id="paymentMethodManageList" class="item-list" style="margin-top:12px;"></div>
+  <div class="hint">수입은 결제수단을 선택하지 않아도 돼.</div>
+</div>
+    
 
     <div class="row-buttons">
       <button type="button" id="addTransactionBtn" onclick="addTransaction()">거래 추가</button>
@@ -837,7 +867,7 @@
   <div id="undoToast" class="toast"></div>
 
   <script>
-    const APP_VERSION = "v1.1.8";
+    const APP_VERSION = "v1.1.9";
     const UNASSIGNED_PAYMENT = "미분류";
   
 
@@ -1631,7 +1661,6 @@ function renderFixedExpenseList() {
       });
     }
 
-    
 function renderPaymentMethodManager() {
   const area = document.getElementById("paymentMethodManageList");
   const selectedInfo = document.getElementById("selectedPaymentInfo");
@@ -1654,16 +1683,32 @@ function renderPaymentMethodManager() {
     div.className = "item-box";
 
     div.innerHTML = `
-      <div class="item-top">
-        <div style="flex:1;">
-          <div class="item-title">${method}</div>
-        </div>
+      <div class="payment-method-row">
+        <div class="item-title">${method}</div>
 
-        <div class="item-action-buttons">
-          <button type="button" class="copy-btn" onclick="selectPaymentMethod('${safeMethod}')">선택</button>
-          <button type="button" class="secondary" onclick="editPaymentMethod('${safeMethod}')">수정</button>
-          <button type="button" class="delete-btn" onclick="deletePaymentMethod('${safeMethod}')">삭제</button>
-        </div>
+        <button
+          type="button"
+          class="payment-select-btn ${selectedPaymentMethod === method ? "selected" : ""}"
+          onclick="selectPaymentMethod('${safeMethod}')"
+        >
+          ${selectedPaymentMethod === method ? "선택됨" : "선택"}
+        </button>
+
+        <button
+          type="button"
+          class="secondary"
+          onclick="editPaymentMethod('${safeMethod}')"
+        >
+          수정
+        </button>
+
+        <button
+          type="button"
+          class="delete-btn"
+          onclick="deletePaymentMethod('${safeMethod}')"
+        >
+          삭제
+        </button>
       </div>
     `;
 
@@ -1671,6 +1716,7 @@ function renderPaymentMethodManager() {
   });
 }
 
+    
     
 
 function selectPaymentMethod(method) {
@@ -1803,7 +1849,6 @@ fixedExpenses = fixedExpenses.map(item =>
 
     function renderPaymentMethodOptions() {
   const targets = [
-    document.getElementById("paymentMethod"),
     document.getElementById("fixedPayment"),
     document.getElementById("paymentFilter")
   ];
@@ -1821,7 +1866,7 @@ fixedExpenses = fixedExpenses.map(item =>
   }
 
   if (targets[1]) {
-    targets[1].innerHTML = '<option value="">결제수단 선택</option>';
+    targets[1].innerHTML = '<option value="">전체 결제수단</option>';
     paymentMethods.forEach(method => {
       const option = document.createElement("option");
       option.value = method;
@@ -1830,18 +1875,6 @@ fixedExpenses = fixedExpenses.map(item =>
     });
   }
 
-if (targets[2]) {
-  targets[2].innerHTML = `
-    <option value="">전체 결제수단</option>
-  `;
-  paymentMethods.forEach(method => {
-    const option = document.createElement("option");
-    option.value = method;
-    option.textContent = method;
-    targets[2].appendChild(option);
-  });
-}
-
   targets.forEach((el, index) => {
     if (!el) return;
     const savedValue = currentValues[index];
@@ -1849,8 +1882,6 @@ if (targets[2]) {
     if (exists) el.value = savedValue;
   });
 }
-
-    
     function updatePaymentVisibility() {
       const wrap = document.getElementById("paymentWrap");
       if (selectedCategory && selectedCategory.type === "income") {
@@ -1866,18 +1897,20 @@ if (targets[2]) {
     }
 
     function clearTransactionForm() {
-      document.getElementById("amount").value = "";
-      document.getElementById("memo").value = "";
-      document.getElementById("paymentMethod").value = "";
-      setTodayToDateInputIfEmpty();
-    }
+  document.getElementById("amount").value = "";
+  document.getElementById("memo").value = "";
+  selectedPaymentMethod = null;
+  renderPaymentMethodManager();
+  setTodayToDateInputIfEmpty();
+}
 
-    function cancelTransactionEdit() {
+ function cancelTransactionEdit() {
   editingTransactionId = null;
   updateTransactionButton();
   clearTransactionForm();
   showToast("거래 수정 취소");
 }
+    
     
     function setTodayToDateInputIfEmpty() {
       const dateInput = document.getElementById("date");
@@ -1898,7 +1931,7 @@ if (targets[2]) {
       const amount = parseInt(document.getElementById("amount").value, 10);
       const memo = document.getElementById("memo").value.trim();
       const date = document.getElementById("date").value;
-      const payment = document.getElementById("paymentMethod").value;
+      const payment = selectedPaymentMethod;
 
       if (!selectedCategory || !amount || !date) {
         alert("카테고리, 금액, 날짜를 입력해");
@@ -1965,9 +1998,9 @@ if (targets[2]) {
       document.getElementById("amount").value = t.amount;
       document.getElementById("memo").value = t.memo || "";
       document.getElementById("date").value = t.date;
-      document.getElementById("paymentMethod").value =
-      t.payment === UNASSIGNED_PAYMENT ? "" : t.payment;
-
+      selectedPaymentMethod = t.payment === UNASSIGNED_PAYMENT ? null : t.payment;
+      
+      renderPaymentMethodManager();
       showToast("수정 모드");
     }
 
@@ -1986,8 +2019,8 @@ if (targets[2]) {
 
   document.getElementById("amount").value = t.amount;
   document.getElementById("memo").value = t.memo || "";
-  document.getElementById("paymentMethod").value =
-  t.payment === UNASSIGNED_PAYMENT ? "" : t.payment;
+  selectedPaymentMethod = t.payment === UNASSIGNED_PAYMENT ? null : t.payment;
+renderPaymentMethodManager();
       
   setTodayToDateInput();
   editingTransactionId = null;
