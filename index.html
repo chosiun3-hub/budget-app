@@ -662,11 +662,6 @@
           </select>
           <select id="paymentFilter">
             <option value="">전체 결제수단</option>
-            <option value="현금">현금</option>
-            <option value="신한코웨이">신한코웨이</option>
-            <option value="쿠팡">쿠팡</option>
-            <option value="하나생활비">하나생활비</option>
-            <option value="-">수입(-)</option>
           </select>
           <select id="sortFilter">
             <option value="date_desc">최신순</option>
@@ -704,10 +699,6 @@
 
         <select id="fixedPayment">
           <option value="">결제수단 선택</option>
-          <option value="현금">현금</option>
-          <option value="신한코웨이">신한코웨이</option>
-          <option value="쿠팡">쿠팡</option>
-          <option value="하나생활비">하나생활비</option>
         </select>
 
         <div class="row-buttons">
@@ -735,7 +726,23 @@
     </div>
   </div>
 </div>
-    
+
+    <div class="card">
+  <h3>결제수단 관리</h3>
+
+  <div class="stack">
+    <input type="text" id="paymentMethodInput" placeholder="결제수단 이름 입력" />
+  </div>
+
+  <div class="row-buttons" style="margin-top:10px;">
+    <button type="button" onclick="savePaymentMethod()">결제수단 저장</button>
+    <button type="button" class="secondary" onclick="cancelPaymentMethodEdit()">수정 취소</button>
+  </div>
+
+  <div id="selectedPaymentInfo" class="selected-info">선택 안됨</div>
+
+  <div id="paymentMethodManageList" class="item-list" style="margin-top:12px;"></div>
+</div>
 
     <div class="card">
       <h3>이번 달 통계</h3>
@@ -822,10 +829,6 @@
       <div class="section-label">결제수단</div>
       <select id="paymentMethod">
         <option value="">결제수단 선택</option>
-        <option value="현금">현금</option>
-        <option value="신한코웨이">신한코웨이</option>
-        <option value="쿠팡">쿠팡</option>
-        <option value="하나생활비">하나생활비</option>
       </select>
       <div class="hint">수입은 결제수단을 선택하지 않아도 돼.</div>
     </div>
@@ -849,7 +852,9 @@
   <div id="undoToast" class="toast"></div>
 
   <script>
-    const APP_VERSION = "v1.1.4";
+    const APP_VERSION = "v1.1.5";
+    const UNASSIGNED_PAYMENT = "미분류";
+  
 
     let transactions = JSON.parse(localStorage.getItem("money")) || [];
     let categories = JSON.parse(localStorage.getItem("categories")) || [
@@ -863,6 +868,16 @@
     let budgets = JSON.parse(localStorage.getItem("budgets")) || {};
     let recentCategories = JSON.parse(localStorage.getItem("recentCategories")) || [];
     let fixedExpenses = JSON.parse(localStorage.getItem("fixedExpenses")) || [];
+    let paymentMethods = JSON.parse(localStorage.getItem("paymentMethods")) || [
+      "미분류",
+      "현금",
+      "신한코웨이",
+      "쿠팡",
+      "하나생활비"
+    ];
+
+    let selectedPaymentMethod = null;
+    let editingPaymentMethod = null;
 
     let editingFixedExpenseId = null;
     let editingTransactionId = null;
@@ -875,7 +890,8 @@
     let dailyBarChart = null;
     let lastDeletedItem = null;
     let undoTimer = null;
-
+  
+    
     function initVersion() {
       document.getElementById("versionText").innerText = "버전: " + APP_VERSION;
     }
@@ -952,22 +968,26 @@
       localStorage.setItem("budgets", JSON.stringify(budgets));
       localStorage.setItem("recentCategories", JSON.stringify(recentCategories));
       localStorage.setItem("fixedExpenses", JSON.stringify(fixedExpenses));
+      localStorage.setItem("paymentMethods", JSON.stringify(paymentMethods));
       saveAutoBackup();
       renderAutoBackupInfo();
     }
 
     function saveAutoBackup() {
-      const autoBackupData = {
-        transactions,
-        categories,
-        budgets,
-        recentCategories,
-        fixedExpenses,
-        savedAt: new Date().toISOString(),
-        version: APP_VERSION
-      };
-      localStorage.setItem("money_auto_backup", JSON.stringify(autoBackupData));
-    }
+  const autoBackupData = {
+    transactions,
+    categories,
+    budgets,
+    recentCategories,
+    fixedExpenses,
+    paymentMethods,
+    savedAt: new Date().toISOString(),
+    version: APP_VERSION
+  };
+
+  localStorage.setItem("money_auto_backup", JSON.stringify(autoBackupData));
+}
+    
 
     function renderAutoBackupInfo() {
       const el = document.getElementById("autoBackupInfo");
@@ -1010,15 +1030,20 @@
         budgets = parsed.budgets || {};
         recentCategories = parsed.recentCategories || [];
         fixedExpenses = parsed.fixedExpenses || [];
+        paymentMethods = parsed.paymentMethods || ["미분류", "현금", "신한코웨이", "쿠팡", "하나생활비"];
 
         selectedCategory = null;
         editingTransactionId = null;
         editingFixedExpenseId = null;
         editingCategoryKey = null;
+        selectedPaymentMethod = null;
+        editingPaymentMethod = null;
 
         saveAll();
         renderCategories();
         renderRecentCategories();
+        renderPaymentMethodOptions();
+        renderPaymentMethodManager();
         populateFixedCategoryOptions();
         renderFixedExpenseList();
         updatePaymentVisibility();
@@ -1058,14 +1083,20 @@
           budgets = parsed.budgets || {};
           recentCategories = parsed.recentCategories || [];
           fixedExpenses = parsed.fixedExpenses || [];
+          paymentMethods = parsed.paymentMethods || ["미분류", "현금", "신한코웨이", "쿠팡", "하나생활비"];
+          
           selectedCategory = null;
           editingTransactionId = null;
           editingFixedExpenseId = null;
           editingCategoryKey = null;
+          selectedPaymentMethod = null;
+          editingPaymentMethod = null;
 
           saveAll();
           renderCategories();
           renderRecentCategories();
+          renderPaymentMethodOptions();
+          renderPaymentMethodManager();
           populateFixedCategoryOptions();
           renderFixedExpenseList();
           updatePaymentVisibility();
@@ -1084,30 +1115,32 @@
     }
 
     function downloadBackup() {
-      const backupData = {
-        transactions,
-        categories,
-        budgets,
-        recentCategories,
-        fixedExpenses,
-        exportedAt: new Date().toISOString(),
-        version: APP_VERSION
-      };
+  const backupData = {
+    transactions,
+    categories,
+    budgets,
+    recentCategories,
+    fixedExpenses,
+    paymentMethods,
+    exportedAt: new Date().toISOString(),
+    version: APP_VERSION
+  };
 
-      const blob = new Blob([JSON.stringify(backupData, null, 2)], {
-        type: "application/json"
-      });
+  const blob = new Blob([JSON.stringify(backupData, null, 2)], {
+    type: "application/json"
+  });
 
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      const today = new Date().toISOString().slice(0, 10);
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const today = new Date().toISOString().slice(0, 10);
 
-      a.href = url;
-      a.download = `budget-backup-${today}.json`;
-      a.click();
+  a.href = url;
+  a.download = `budget-backup-${today}.json`;
+  a.click();
 
-      URL.revokeObjectURL(url);
-    }
+  URL.revokeObjectURL(url);
+}
+    
 
     function downloadCSV() {
       if (transactions.length === 0) {
@@ -1419,7 +1452,8 @@
               main,
               sub,
               type: newType,
-              payment: newType === "income" ? "-" : t.payment
+     payment: newType === "income" ? UNASSIGNED_PAYMENT : t.payment
+            
             };
           }
           return t;
@@ -1607,6 +1641,222 @@
       });
     }
 
+    function renderPaymentMethodManager() {
+  const area = document.getElementById("paymentMethodManageList");
+  const selectedInfo = document.getElementById("selectedPaymentInfo");
+  if (!area || !selectedInfo) return;
+
+  area.innerHTML = "";
+
+  selectedInfo.innerText = selectedPaymentMethod
+    ? `선택: ${selectedPaymentMethod}`
+    : "선택 안됨";
+
+  if (paymentMethods.length === 0) {
+    area.innerHTML = '<div class="muted">등록된 결제수단이 없어</div>';
+    return;
+  }
+
+  paymentMethods.forEach(method => {
+    const div = document.createElement("div");
+    div.className = "item-box";
+
+    div.innerHTML = `
+      <div class="item-top">
+        <div style="flex:1;">
+          <div class="item-title">${method}</div>
+        </div>
+
+        <div class="item-action-buttons">
+          <button type="button" class="copy-btn" onclick="selectPaymentMethod('${method}')">선택</button>
+          <button type="button" class="secondary" onclick="editPaymentMethod('${method}')">수정</button>
+          <button type="button" class="delete-btn" onclick="deletePaymentMethod('${method}')">삭제</button>
+        </div>
+      </div>
+    `;
+
+    area.appendChild(div);
+  });
+}
+
+function selectPaymentMethod(method) {
+  selectedPaymentMethod = method;
+  renderPaymentMethodManager();
+}
+
+function editPaymentMethod(method) {
+  if (method === UNASSIGNED_PAYMENT) {
+  alert("미분류는 수정할 수 없어");
+  return;
+}
+  editingPaymentMethod = method;
+  selectedPaymentMethod = method;
+  document.getElementById("paymentMethodInput").value = method;
+  renderPaymentMethodManager();
+  showToast("결제수단 수정 모드");
+}
+
+function cancelPaymentMethodEdit() {
+  editingPaymentMethod = null;
+  selectedPaymentMethod = null;
+  document.getElementById("paymentMethodInput").value = "";
+  renderPaymentMethodManager();
+  showToast("결제수단 수정 취소");
+}
+
+function savePaymentMethod() {
+  const input = document.getElementById("paymentMethodInput");
+  const value = input.value.trim();
+
+  if (!value) {
+    alert("결제수단 이름을 입력해");
+    return;
+  }
+
+  if (editingPaymentMethod) {
+    if (
+      paymentMethods.includes(value) &&
+      value !== editingPaymentMethod
+    ) {
+      alert("이미 있는 결제수단이야");
+      return;
+    }
+
+    paymentMethods = paymentMethods.map(method =>
+      method === editingPaymentMethod ? value : method
+    );
+
+    transactions = transactions.map(t =>
+  t.payment === editingPaymentMethod ? { ...t, payment: value } : t
+);
+
+fixedExpenses = fixedExpenses.map(item =>
+  item.payment === editingPaymentMethod ? { ...item, payment: value } : item
+);
+    
+
+    if (selectedPaymentMethod === editingPaymentMethod) {
+      selectedPaymentMethod = value;
+    }
+
+    editingPaymentMethod = null;
+    showToast("결제수단 수정 완료");
+  } else {
+    if (paymentMethods.includes(value)) {
+      alert("이미 있는 결제수단이야");
+      return;
+    }
+
+    paymentMethods.push(value);
+    selectedPaymentMethod = value;
+    showToast("결제수단 추가 완료");
+  }
+
+  input.value = "";
+  saveAll();
+  renderPaymentMethodOptions();
+  renderPaymentMethodManager();
+  render();
+}
+
+function deletePaymentMethod(method) {
+  if (method === UNASSIGNED_PAYMENT) {
+  alert("미분류는 삭제할 수 없어");
+  return;
+}
+  
+  const usedInTransactions = transactions.some(t => t.payment === method);
+  const usedInFixedExpenses = fixedExpenses.some(item => item.payment === method);
+
+  if (usedInTransactions || usedInFixedExpenses) {
+    const ok = confirm(
+      `${method} 결제수단을 삭제할까?\n기존 거래내역/고정비의 결제수단도 '${UNASSIGNED_PAYMENT}' 로 변경돼.`
+    );
+    if (!ok) return;
+
+    
+transactions = transactions.map(t =>
+  t.payment === method ? { ...t, payment: UNASSIGNED_PAYMENT } : t
+);
+
+fixedExpenses = fixedExpenses.map(item =>
+  item.payment === method ? { ...item, payment: UNASSIGNED_PAYMENT } : item
+);
+    
+
+  } else {
+    const ok = confirm(`${method} 결제수단을 삭제할까?`);
+    if (!ok) return;
+  }
+
+  paymentMethods = paymentMethods.filter(item => item !== method);
+
+  if (selectedPaymentMethod === method) {
+    selectedPaymentMethod = null;
+  }
+
+  if (editingPaymentMethod === method) {
+    editingPaymentMethod = null;
+    document.getElementById("paymentMethodInput").value = "";
+  }
+
+  saveAll();
+  renderPaymentMethodOptions();
+  renderPaymentMethodManager();
+  render();
+  showToast("결제수단 삭제 완료");
+}
+
+    function renderPaymentMethodOptions() {
+  const targets = [
+    document.getElementById("paymentMethod"),
+    document.getElementById("fixedPayment"),
+    document.getElementById("paymentFilter")
+  ];
+
+  const currentValues = targets.map(el => el ? el.value : "");
+
+  if (targets[0]) {
+    targets[0].innerHTML = '<option value="">결제수단 선택</option>';
+    paymentMethods.forEach(method => {
+      const option = document.createElement("option");
+      option.value = method;
+      option.textContent = method;
+      targets[0].appendChild(option);
+    });
+  }
+
+  if (targets[1]) {
+    targets[1].innerHTML = '<option value="">결제수단 선택</option>';
+    paymentMethods.forEach(method => {
+      const option = document.createElement("option");
+      option.value = method;
+      option.textContent = method;
+      targets[1].appendChild(option);
+    });
+  }
+
+if (targets[2]) {
+  targets[2].innerHTML = `
+    <option value="">전체 결제수단</option>
+  `;
+  paymentMethods.forEach(method => {
+    const option = document.createElement("option");
+    option.value = method;
+    option.textContent = method;
+    targets[2].appendChild(option);
+  });
+}
+
+  targets.forEach((el, index) => {
+    if (!el) return;
+    const savedValue = currentValues[index];
+    const exists = [...el.options].some(opt => opt.value === savedValue);
+    if (exists) el.value = savedValue;
+  });
+}
+
+    
     function updatePaymentVisibility() {
       const wrap = document.getElementById("paymentWrap");
       if (selectedCategory && selectedCategory.type === "income") {
@@ -1677,7 +1927,7 @@
                 amount,
                 memo,
                 date,
-                payment: selectedCategory.type === "income" ? "-" : payment
+          payment: selectedCategory.type === "income" ? UNASSIGNED_PAYMENT : payment
               }
             : t
         );
@@ -1694,7 +1944,7 @@
           amount,
           memo,
           date,
-          payment: selectedCategory.type === "income" ? "-" : payment
+        payment: selectedCategory.type === "income" ? UNASSIGNED_PAYMENT : payment
         });
 
         showToast("거래 저장 완료");
@@ -1721,7 +1971,8 @@
       document.getElementById("amount").value = t.amount;
       document.getElementById("memo").value = t.memo || "";
       document.getElementById("date").value = t.date;
-      document.getElementById("paymentMethod").value = t.payment === "-" ? "" : t.payment;
+      document.getElementById("paymentMethod").value =
+      t.payment === UNASSIGNED_PAYMENT ? "" : t.payment;
 
       showToast("수정 모드");
     }
@@ -1741,8 +1992,9 @@
 
   document.getElementById("amount").value = t.amount;
   document.getElementById("memo").value = t.memo || "";
-  document.getElementById("paymentMethod").value = t.payment === "-" ? "" : t.payment;
-
+  document.getElementById("paymentMethod").value =
+  t.payment === UNASSIGNED_PAYMENT ? "" : t.payment;
+      
   setTodayToDateInput();
   editingTransactionId = null;
   updateTransactionButton();
@@ -2212,21 +2464,22 @@
     document.getElementById("sortFilter").addEventListener("change", render);
     document.getElementById("restoreFile").addEventListener("change", restoreBackup);
 
-    
     initVersion();
-    bindSearchInput();
-    renderCategories();
-    renderRecentCategories();
-    setCurrentMonth();
-    setTodayToDateInputIfEmpty();
-    updatePaymentVisibility();
-    updateTransactionButton();
-    saveAutoBackup();
-    renderAutoBackupInfo();
-    populateFixedCategoryOptions();
-    renderFixedExpenseList();
-    render();
-    checkUpdate();
+bindSearchInput();
+renderCategories();
+renderRecentCategories();
+renderPaymentMethodOptions();
+renderPaymentMethodManager();
+setCurrentMonth();
+setTodayToDateInputIfEmpty();
+updatePaymentVisibility();
+updateTransactionButton();
+saveAutoBackup();
+renderAutoBackupInfo();
+populateFixedCategoryOptions();
+renderFixedExpenseList();
+render();
+checkUpdate();
     
 
   </script>
