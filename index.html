@@ -1060,60 +1060,62 @@
       document.getElementById("restoreFile").click();
     }
 
-    function restoreBackup(event) {
-      const file = event.target.files[0];
-      if (!file) return;
+function restoreBackup(event) {
+  const file = event.target.files[0];
+  if (!file) return;
 
-      const reader = new FileReader();
+  const reader = new FileReader();
 
-      reader.onload = function(e) {
-        try {
-          const parsed = JSON.parse(e.target.result);
+  reader.onload = function(e) {
+    try {
+      const parsed = JSON.parse(e.target.result);
 
-          if (!Array.isArray(parsed.transactions) || !Array.isArray(parsed.categories)) {
-            alert("올바른 백업 파일이 아니야");
-            return;
-          }
+      if (!Array.isArray(parsed.transactions) || !Array.isArray(parsed.categories)) {
+        alert("백업 파일 구조가 올바르지 않아");
+        return;
+      }
 
-          const ok = confirm("현재 데이터를 덮어쓰고 복구할까?");
-          if (!ok) return;
+      const ok = confirm("현재 데이터를 덮어쓰고 복구할까?");
+      if (!ok) return;
 
-          transactions = parsed.transactions || [];
-          categories = parsed.categories || [];
-          budgets = parsed.budgets || {};
-          recentCategories = parsed.recentCategories || [];
-          fixedExpenses = parsed.fixedExpenses || [];
-          paymentMethods = parsed.paymentMethods || ["미분류", "현금", "신한코웨이", "쿠팡", "하나생활비"];
-          
-          selectedCategory = null;
-          editingTransactionId = null;
-          editingFixedExpenseId = null;
-          editingCategoryKey = null;
-          selectedPaymentMethod = null;
-          editingPaymentMethod = null;
+      transactions = parsed.transactions || [];
+      categories = parsed.categories || [];
+      budgets = parsed.budgets || {};
+      recentCategories = parsed.recentCategories || [];
+      fixedExpenses = parsed.fixedExpenses || [];
+      paymentMethods = parsed.paymentMethods || ["미분류", "현금", "신한코웨이", "쿠팡", "하나생활비"];
 
-          saveAll();
-          renderCategories();
-          renderRecentCategories();
-          renderPaymentMethodOptions();
-          renderPaymentMethodManager();
-          populateFixedCategoryOptions();
-          renderFixedExpenseList();
-          updatePaymentVisibility();
-          updateTransactionButton();
-          render();
+      selectedCategory = null;
+      editingTransactionId = null;
+      editingFixedExpenseId = null;
+      editingCategoryKey = null;
+      selectedPaymentMethod = null;
+      editingPaymentMethod = null;
 
-          alert("복구 완료");
-        } catch {
-          alert("복구 실패: 파일 형식을 확인해줘");
-        } finally {
-          event.target.value = "";
-        }
-      };
+      saveAll();
+      renderCategories();
+      renderRecentCategories();
+      renderPaymentMethodOptions();
+      renderPaymentMethodManager();
+      populateFixedCategoryOptions();
+      renderFixedExpenseList();
+      updatePaymentVisibility();
+      updateTransactionButton();
+      render();
 
-      reader.readAsText(file);
+      alert("복구 완료");
+    } catch (error) {
+      console.error(error);
+      alert("복구 실패: " + error.message);
+    } finally {
+      event.target.value = "";
     }
+  };
 
+  reader.readAsText(file);
+}
+
+    
     function downloadBackup() {
   const backupData = {
     transactions,
@@ -1240,62 +1242,62 @@
       saveAll();
       renderFixedExpenseList();
     }
+    
+function renderFixedExpenseList() {
+  const area = document.getElementById("fixedExpenseList");
+  const foldBtn = document.getElementById("fixedFoldBtn");
+  if (!area) return;
 
-    function renderFixedExpenseList() {
-      const area = document.getElementById("fixedExpenseList");
-      const foldBtn = document.getElementById("fixedFoldBtn");
-      if (!area) return;
+  if (foldBtn) {
+    foldBtn.innerText = fixedExpenseCollapsed ? "펼치기" : "접기";
+  }
 
-      if (foldBtn) {
-        foldBtn.innerText = fixedExpenseCollapsed ? "펼치기" : "접기";
-      }
+  if (fixedExpenseCollapsed) {
+    area.innerHTML = "";
+    area.classList.add("collapsed");
+    return;
+  }
 
-      if (fixedExpenseCollapsed) {
-        area.innerHTML = "";
-        area.classList.add("collapsed");
-        return;
-      }
+  area.classList.remove("collapsed");
+  area.innerHTML = "";
 
-      area.classList.remove("collapsed");
-      area.innerHTML = "";
+  if (fixedExpenses.length === 0) {
+    area.innerHTML = '<div class="muted">등록된 고정비가 없어</div>';
+    return;
+  }
 
-      if (fixedExpenses.length === 0) {
-        area.innerHTML = '<div class="muted">등록된 고정비가 없어</div>';
-        return;
-      }
+  fixedExpenses.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "item-box";
 
-      fixedExpenses.forEach(item => {
-        const safeMethod = method.replace(/'/g, "\\'");
-        const div = document.createElement("div");
-        div.className = "item-box";
+    div.innerHTML = `
+      <div class="item-top">
+        <div style="flex:1;">
+          <div class="item-title">${item.name}</div>
+          <div class="sub-row" style="padding:4px 0 0 0;">${item.main} > ${item.sub}</div>
+          <div class="item-amount expense">- ${formatWon(item.amount)}</div>
+        </div>
+      </div>
 
-        div.innerHTML = `
-          <div class="item-top">
-            <div style="flex:1;">
-              <div class="item-title">${item.name}</div>
-              <div class="sub-row" style="padding:4px 0 0 0;">${item.main} > ${item.sub}</div>
-              <div class="item-amount expense">- ${formatWon(item.amount)}</div>
-            </div>
-          </div>
+      <div class="item-meta">
+        <div class="pill">결제수단: ${item.payment}</div>
+        <div class="pill">${item.hidden ? "숨김" : "표시중"}</div>
+      </div>
 
-          <div class="item-meta">
-            <div class="pill">결제수단: ${item.payment}</div>
-            <div class="pill">${item.hidden ? "숨김" : "표시중"}</div>
-          </div>
+      <div class="fixed-actions">
+        <button type="button" class="secondary" onclick="editFixedExpense(${item.id})">수정</button>
+        <button type="button" class="secondary" onclick="toggleFixedExpenseHidden(${item.id})">
+          ${item.hidden ? "숨김 해제" : "숨기기"}
+        </button>
+        <button type="button" class="delete-btn" onclick="deleteFixedExpense(${item.id})">삭제</button>
+      </div>
+    `;
 
-          <div class="fixed-actions">
-            <button type="button" class="secondary" onclick="editFixedExpense(${item.id})">수정</button>
-            <button type="button" class="secondary" onclick="toggleFixedExpenseHidden(${item.id})">
-              ${item.hidden ? "숨김 해제" : "숨기기"}
-            </button>
-            <button type="button" class="delete-btn" onclick="deleteFixedExpense(${item.id})">삭제</button>
-          </div>
-        `;
+    area.appendChild(div);
+  });
+}
 
-        area.appendChild(div);
-      });
-    }
-
+    
     function editFixedExpense(id) {
       const item = fixedExpenses.find(f => f.id === id);
       if (!item) return;
@@ -1644,7 +1646,7 @@
       });
     }
 
-    function renderPaymentMethodManager() {
+function renderPaymentMethodManager() {
   const area = document.getElementById("paymentMethodManageList");
   const selectedInfo = document.getElementById("selectedPaymentInfo");
   if (!area || !selectedInfo) return;
@@ -1661,28 +1663,29 @@
   }
 
   paymentMethods.forEach(method => {
+    const safeMethod = method.replace(/'/g, "\\'");
     const div = document.createElement("div");
     div.className = "item-box";
 
     div.innerHTML = `
-  <div class="item-top">
-    <div style="flex:1;">
-      <div class="item-title">${method}</div>
-    </div>
+      <div class="item-top">
+        <div style="flex:1;">
+          <div class="item-title">${method}</div>
+        </div>
 
-    <div class="item-action-buttons">
-      <button type="button" class="copy-btn" onclick="selectPaymentMethod('${safeMethod}')">선택</button>
-      <button type="button" class="secondary" onclick="editPaymentMethod('${safeMethod}')">수정</button>
-      <button type="button" class="delete-btn" onclick="deletePaymentMethod('${safeMethod}')">삭제</button>
-    </div>
-  </div>
-`;
-    
+        <div class="item-action-buttons">
+          <button type="button" class="copy-btn" onclick="selectPaymentMethod('${safeMethod}')">선택</button>
+          <button type="button" class="secondary" onclick="editPaymentMethod('${safeMethod}')">수정</button>
+          <button type="button" class="delete-btn" onclick="deletePaymentMethod('${safeMethod}')">삭제</button>
+        </div>
+      </div>
+    `;
 
     area.appendChild(div);
   });
 }
 
+    
 function selectPaymentMethod(method) {
   selectedPaymentMethod = method;
   renderPaymentMethodManager();
